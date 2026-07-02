@@ -270,7 +270,7 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 20px;
+        padding: 12px 0;
         font-family: system-ui, -apple-system, sans-serif;
         width: 100%;
         box-sizing: border-box;
@@ -479,6 +479,16 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
         .span-horizontal, .span-half-left, .span-half-right { height: ${c.mLine}px; top: calc(50% - ${c.mLine / 2}px); }
         .number-badge { width: ${c.mBadge}px; height: ${c.mBadge}px; font-size: ${c.mFont}px; border-width: 1.5px; }
         .grid-board { gap: ${c.mGap}px; padding: 8px; border-radius: 16px; }
+        .puzzle-container {
+    /* FIX: Strip all padding on mobile so the board uses 100% of the card width */
+    padding: 0; 
+  }
+
+  .board-wrapper {
+    /* FIX: Safeguard the board from being crushed by any parent flex box elements */
+    flex-shrink: 0; 
+    width: 100%;
+  }
       }
     `}</style>
   </div>
