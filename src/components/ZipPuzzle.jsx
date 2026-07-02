@@ -81,7 +81,7 @@ const { gridConfig, maxNum, start } = generateZipGridConfig(gridSize, difficulty
           align-items: center;
           width: 100%;
           // background-color: #f8fafc;
-          min-height: 100vh;
+          min-height: auto;
           box-sizing: border-box;
         }
 
