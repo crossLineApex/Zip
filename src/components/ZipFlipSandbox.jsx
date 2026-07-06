@@ -4,7 +4,7 @@ import ScrambledGridConfig from "../assets/ScrambledGridConfig.js";
 import generateZipGridConfig from "../assets/levelGenerator.js";
 import Timer from "./Timer.jsx";
 
-const ZipPuzzle = () => {
+const ZipFlipSandbox = () => {
   const [difficulty, setDifficulty] = useState("easy");
   const [gridSize, setGridSize] = useState(5);
   const [refreshKey, setRefreshKey] = useState(1);
@@ -271,10 +271,10 @@ const ZipPuzzle = () => {
 
         /* Active highlight status styling (emerald matched themes) */
         .control-btn.active {
-          background-color: #06b6d4;
-          border-color: #00a490;
+          background-color: #4A4FE0;
+          // border-color: #00a490;
           color: #ffffff;
-          box-shadow: 0 4px 12px rgba(0, 189, 165, 0.25);
+          // box-shadow: 0 4px 12px rgba(0, 189, 165, 0.25);
         }
 
         .capitalize {
@@ -307,4 +307,4 @@ const ZipPuzzle = () => {
   );
 };
 
-export default ZipPuzzle;
+export default ZipFlipSandbox;

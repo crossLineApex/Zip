@@ -1,11 +1,11 @@
 /**
- * Instantly generates a perfectly solvable n x n Zip Grid Configuration
+ * Instantly generates a perfectly solvable n x n Zip Grid Configuration for Zip Dot Game
  * using the constant-time Markov Chain Backbite Algorithm.
  * @param {number} n - The dimension of the square board (n x n)
  * @param {string} level - Difficulty setting: 'easy', 'medium', or 'hard'
  * @returns {Array<Array<Object>>} A complete 2D array matching the original layout structure
  */
-const generateZipGridConfig = (n, level) => {
+const generateZipDotConfig = (n, level) => {
   const totalCells = n * n;
   let maxNum = 2;
 
@@ -13,16 +13,16 @@ const generateZipGridConfig = (n, level) => {
   const offset = Math.floor(Math.random() * 2) + 1; // Generates +1 or +2
 
   if (level === 'easy') {
-    const easyPcts = [0.25, 0.26, 0.27];
+    const easyPcts = [0.18, 0.19, 0.20, 0.21, 0.22, 0.23];
     const pct = easyPcts[Math.floor(Math.random() * easyPcts.length)];
     maxNum = Math.floor(pct * totalCells) + offset;
   } else if (level === 'medium') {
-    const medPcts = [0.19, 0.20, 0.21, 0.22];
+    const medPcts = [0.25, 0.26, 0.27, 0.28, 0.29, 0.30];
     const pct = medPcts[Math.floor(Math.random() * medPcts.length)];
     maxNum = Math.floor(pct * totalCells) + offset;
   } else if (level === 'hard') {
-    // Random float between 0.01 and 0.09
-    const pct = 0.01 + Math.random() * 0.08; 
+    const hardPcts = [0.35, 0.36, 0.37, 0.38, 0.39, 0.40];
+    const pct = hardPcts[Math.floor(Math.random() * hardPcts.length)];
     maxNum = Math.floor(pct * totalCells) + offset;
   }
 
@@ -188,10 +188,37 @@ const generateZipGridConfig = (n, level) => {
     }
   });
 
+    // Increment every coordinate
+    path.forEach(([row, col], i) => {
+    path[i] = [row + 1, col + 1];
+    });
+
+    // Get first and last assignments
+    const entries = Object.entries(numberAssignments);
+    const first = entries[0];
+    const last = entries[entries.length - 1];
+
+    // Build the object
+    const transformedPath = {};
+
+    path.forEach(([row, col], index) => {
+    const key = `${row}-${col}`;
+
+    if (index === Number(first[0])) {
+        transformedPath[key] = first[1];
+    } else if (index === Number(last[0])) {
+        transformedPath[key] = last[1];
+    } else {
+        transformedPath[key] = undefined;
+    }
+    });
+
+
   return {
       gridConfig: gridConfig,
       maxNum: maxNum,
-      start: path[0] // Securely returns the starting [row, col] position of clue 1
+      start: path[0], // Securely returns the starting [row, col] position of clue 1
+      transformedPath: transformedPath // Returns the path with coordinates as keys and clue numbers as values
     };};
 
-export default generateZipGridConfig;
+export default generateZipDotConfig;

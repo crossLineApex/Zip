@@ -10,7 +10,7 @@ import SelectionStatus from './layouts/SelectionStatus.jsx';
 
 function App() {
   const [view, setView] = useState('daily');
-  const [selectedPuzzle, setSelectedPuzzle] = useState('flip');
+  const [selectedPuzzle, setSelectedPuzzle] = useState('');
   const [selectedMode, setSelectedMode] = useState('sandbox');
 
   const handlePuzzleSelect = (puzzle) => {
@@ -24,8 +24,8 @@ function App() {
 
   const resetToDaily = () => {
     setView('daily');
-    setSelectedPuzzle('flip');
-    setSelectedMode('sandbox');
+    setSelectedPuzzle('');
+    setSelectedMode('');
   };
 
   return (
@@ -93,8 +93,8 @@ function App() {
                 ctaB="Try Sandbox · Dot"
                 icon={
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                    <rect x="2" y="2" width="18" height="18" rx="3" stroke="var(--zipa)" stroke-width="1.6"/>
-                    <path d="M6 11h10M11 6v10" stroke="var(--zipa)" stroke-width="1.6" stroke-linecap="round"/>
+                    <rect x="2" y="2" width="18" height="18" rx="3" stroke="var(--zipa)" strokeWidth="1.6"/>
+                    <path d="M6 11h10M11 6v10" stroke="var(--zipa)" strokeWidth="1.6" strokeLinecap="round"/>
                   </svg>
                 }
               />
@@ -182,11 +182,11 @@ function App() {
               <FAQItem question="What is Anytime Zip?" answer="Anytime Zip is a casual, independent, free-to-play puzzle site featuring two unique path-building game modes: Zip Flip and Zip Dot. Merely inspired by Linkedin's Zip game, but with its own unique twist." />
               <FAQItem question="What's the difference between Daily, Sandbox, and Ascent modes?"
                 answer="Daily is one shared curated puzzle per day that everyone sees. Sandbox serves vetted puzzles on demand at any grid size from 5×5 all the way up to 12×12. Ascent starts easy and ramps through the same curated puzzle pool as you climb." />
-              <FAQItem question="Is Anytime Zip free to play?" answer="100% free forever. There are no paywalls, locked levels, or premium restrictions blocking you from zipping grids."/>
+              <FAQItem question="Is Anytime Zip free to play?" answer="100% free forever. There are no paywalls, locked levels, or premium restrictions blocking you from solving puzzles."/>
               <FAQItem question="How many ways can I play Anytime Zip Game?" answer="You can either solve daiily puzzle on homepage, or select one of either Zip Flip or Zip Dot from the header with your choice of mode. Relieve your boredom!" />
               <FAQItem question="Do I need to create an account or sign up?" answer="No sign-up required. Play instantly. We believe great puzzle games shouldn't require a login form" />
               <FAQItem question="Can I play Anytime Zip offline?" answer="You only need an internet connection to load the initial website. Once the page is open, you can keep playing even if you lose service or hop onto an airplane or ride inside a tunnel."/>
-              <FAQItem question="Does Anytime Zip on my phone?" answer="Yes! Anytime Zip is fully responsive and works on any device with a modern web browser. Play on your phone, tablet, or desktop." />
+              <FAQItem question="Does Anytime Zip work on my phone?" answer="Yes! Anytime Zip is fully responsive and works on any device with a modern web browser. Play on your phone, tablet, or desktop." />
               <FAQItem question="How often are puzzles updated?" answer="A fresh puzzle arrives each day so there is always a new challenge to solve." />
               <FAQItem question="Is this the official LinkedIn Zip game?" answer="No. Anytime Zip is an independent project inspired by the original LinkedIn Zip game. It is not affiliated with LinkedIn or follows the same Zip puzzle solving mechanics." />
               <FAQItem question="Is my privacy protected?" answer="Yes. Anytime Zip does not collect any personal information or track your activity using cookies, sessions. You can solve puzzles without creating an account or providing any personal data." />
