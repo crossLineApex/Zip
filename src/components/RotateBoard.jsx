@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
+const RotateBoard = ({ 
+  gridConfig,
+  maxNum, 
+  start, 
+  finalTime, 
+  pointsEarned, 
+  totalPoints, 
+  isTimeOut,
+  onStartGame, 
+  onWinGame, 
+  onNextLevel,
+  onTryAgain
+ }) => {
   // Local state to track modified track lines to avoid mutating the gridConfig prop
   const [tracksState, setTracksState] = useState({});
   const [isWon, setIsWon] = useState(false);
@@ -41,7 +53,13 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
   };
 
   const toggleCell = (rowIndex, colIndex) => {
+    
+    if (isTimeOut || isWon) return;
+    
     const key = `${rowIndex}-${colIndex}`;
+    if (onStartGame) {
+      onStartGame();
+    }
     setTracksState((prev) => {
       const currentLines = prev[key] || [];
       // If the cell doesn't have track segments, don't waste render cycles
@@ -63,7 +81,7 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
   // ============================================================================
   useEffect(() => {
     // Guard: Prevent running on initial empty state mount
-    if (Object.keys(tracksState).length === 0 || !gridConfig) return;
+    if (Object.keys(tracksState).length === 0 || !gridConfig || isTimeOut) return;
 
     const validateZippedPath = () => {
       let startR = -1, startC = -1;
@@ -183,9 +201,11 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
     if (validateZippedPath()) {
       setTimeout(() => {
           setIsWon(true); //  Trigger the gorgeous custom UI overlay
-        }, 300);
+          // Stop the parent clock immediately on path confirmation
+         if (onWinGame) onWinGame();
+        }, 600);
     }
-  }, [tracksState, gridConfig, start, maxNum, rowCount, colCount]);
+  }, [tracksState, gridConfig, start, maxNum, rowCount, colCount, onWinGame, isTimeOut]);
 
   // Sizing matrix config lookup that automatically scales typography, lines, and gaps based on n
   const c = {
@@ -244,11 +264,30 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
           </div>
 
           <div className="victory-card">
-            <div className="victory-icon-shield">
-              <span className="lightning-icon">⚡</span>
-            </div>
             <h2>GRID ZIPPED!</h2>
-            <p>You are on ROLL!!</p>
+            {/* Conditional elegant wrapper to show completion metric */}
+            {finalTime && (
+              <div className="victory-stats-container">
+                {/* Row 1: Two Columns (Time & Current Level Earnings) */}
+                <div className="stats-row split-row">
+                  <div className="stat-box align-left">
+                    <span className="stat-label">Time Taken</span>
+                    <strong>{finalTime}</strong>
+                  </div>
+                  <div className="stat-box align-right">
+                    <span className="stat-label">Points Earned</span>
+                    <strong className="points-plus">+{pointsEarned}</strong>
+                  </div>
+                </div>
+
+                {/* Row 2: Centered Single Column (Total Account Balance) */}
+                <div className="stats-row center-row">
+                  <div className="stat-total">
+                    Total Points: <strong>{totalPoints}</strong>
+                  </div>
+                </div>
+              </div>
+            )}
             
             <button 
               className="next-level-btn"
@@ -261,6 +300,26 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
           </div>
         </div>
       )}
+
+          {/* ============================================================================
+          NEW: TRY AGAIN TIME-OUT OVERLAY CONTAINER
+          Reuses your premium glassmorphism layouts but themes it for a retry
+          ============================================================================ */}
+          {isTimeOut && (
+            <div className="victory-overlay timeout-theme">
+              <div className="victory-card">
+                <h2 className="timeout-title">TIME OUT!</h2>
+                <p>Ooops</p>
+                
+                <button 
+                  className="next-level-btn timeout-btn"
+                  onClick={onTryAgain}
+                >
+                  Try Again
+                </button>
+              </div>
+            </div>
+          )}
 
     </div>
 
@@ -287,7 +346,7 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
       .grid-board {
         display: grid;
         gap: ${c.gap}px; 
-        background-color: #e2e8f0; 
+        background-color: #d6d7f8; 
         padding: 12px;
         border-radius: 24px;
         width: 100%;
@@ -312,7 +371,7 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
       .grid-cell:not(.node-locked):active { transform: scale(0.95); }
       .grid-cell:hover:not(.node-locked) { background-color: #f1f5f9; }
       .grid-cell.node-locked { cursor: default; }
-      .line-segment { position: absolute; background-color: #00bda5; z-index: 1; pointer-events: none; }
+      .line-segment { position: absolute; background-color: #4A4FE0; z-index: 1; pointer-events: none; }
 
       /* Track sizing logic calculations */
       .span-vertical { top: 0; bottom: 0; left: calc(50% - ${c.line / 2}px); width: ${c.line}px; }
@@ -383,26 +442,6 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
         z-index: 60;
       }
 
-      /* Styled geometric badge wrapper around the lightning bolt icon */
-      .victory-icon-shield {
-        width: 70px;
-        height: 70px;
-        background: linear-gradient(135deg, #00bda5 0%, #009381 100%);
-        border-radius: 22px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 16px auto;
-        box-shadow: 0 8px 20px rgba(0, 189, 165, 0.35);
-        animation: iconSpinBounce 2.5s infinite ease-in-out;
-      }
-
-      .lightning-icon {
-        font-size: 34px;
-        color: #ffffff;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-      }
-
       .victory-card h2 {
         margin: 0 0 6px 0;
         font-size: 22px;
@@ -417,6 +456,93 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
         color: #64748b;
         line-height: 1.4;
         font-weight: 500;
+      }
+
+        /* Try Again Text Accents Override Style */
+        .victory-card h2.timeout-title {
+          color: #ff5252;
+        }
+
+        /* Try Again Selection Button Accent Overrides Style */
+        .next-level-btn.timeout-btn {
+          background-color: #ff5252;
+          box-shadow: 0 4px 12px rgba(255, 82, 82, 0.25);
+        }
+        .next-level-btn.timeout-btn:hover {
+          background-color: #e04343;
+          box-shadow: 0 6px 16px rgba(255, 82, 82, 0.35);
+        }
+
+      /* --- OVERHAULED METRIC CONTAINER BLOCKS --- */
+      .victory-stats-container {
+        width: 100%;
+        background-color: #f8fafc; /* Ultra-soft off-white slate background tint */
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 22px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      /* Row 1 Layout Configuration */
+      .stats-row.split-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed #cbd5e1; /* Subtle clean dividing vector line */
+        padding-bottom: 10px;
+      }
+
+      .stat-box {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .stat-box.align-left { text-align: left; }
+      .stat-box.align-right { text-align: right; }
+
+      .stat-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #64748b;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+
+      .stat-box strong {
+        color: #0f172a;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      /* Emerald highlighted green theme code for extra point notifications */
+      .stat-box strong.points-plus {
+        color: #00bda5;
+      }
+
+      /* Row 2 Layout Configuration */
+      .stats-row.center-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 2px;
+      }
+
+      .stat-total {
+        font-size: 13px;
+        color: #475569;
+        font-weight: 600;
+      }
+
+      .stat-total strong {
+        font-size: 16px;
+        font-weight: 800;
+        color: #1e152a; /* Deep bold midnight accent color */
+        margin-left: 4px;
       }
 
       /* Clean, heavily styled custom tactical call-to-action button */
@@ -435,8 +561,8 @@ const RotateBoard = ({ gridConfig, maxNum, start, onNextLevel }) => {
       }
 
       .next-level-btn:hover {
-        background: #00bda5; /* Flashes emerald on hover to indicate play path */
-        box-shadow: 0 6px 20px rgba(0, 189, 165, 0.4);
+        background: #4A4FE0;
+        box-shadow: 0 6px 20px rgba(74, 79, 224, 0.4);
         transform: translateY(-1px);
       }
 

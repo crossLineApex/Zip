@@ -1,44 +1,39 @@
-import React, { useState, useMemo, useEffect } from "react";
-import RotateBoard from "./RotateBoard.jsx";
-import ScrambledGridConfig from "../assets/ScrambledGridConfig.js";
-import generateZipGridConfig from "../assets/levelGenerator.js";
+import React, {useState, useMemo, useEffect} from "react";
+import Board from "./Board.jsx";
 import Timer from "./Timer.jsx";
+import generateZipDotConfig from "../assets/levelDotGenerator.js";
+import convertToZipDot from "../assets/convertToZipDot.js";
 
-const ZipPuzzle = () => {
-  const [difficulty, setDifficulty] = useState("easy");
-  const [gridSize, setGridSize] = useState(5);
-  const [refreshKey, setRefreshKey] = useState(1);
-  //Single trigger state to activate the clock
-  const [isTimerActive, setIsTimerActive] = useState(false);
-  //Holds the frozen victory time string
-  const [finalTime, setFinalTime] = useState("");
-  // NEW SCORE ENGINE TRACK STATE VARIABLES
-  const [pointsEarned, setPointsEarned] = useState(0);
-  const [totalPoints, setTotalPoints] = useState(0);
-
-  const puzzle = useMemo(() => {
-    const { gridConfig, maxNum, start } = generateZipGridConfig(gridSize, difficulty);
-    const scrambledGrid = ScrambledGridConfig(gridConfig, 0.8);
-    return { scrambledGrid, maxNum, start };
-  }, [gridSize, difficulty, refreshKey]);
-
-// const { gridConfig, maxNum, start } = generateZipGridConfig(gridSize, difficulty);
-//   const scrambledGrid =  ScrambledGridConfig(gridConfig, 0.8);
+const ZipDotSandbox = () => {
+    const [difficulty, setDifficulty] = useState("easy");
+    const [gridSize, setGridSize] = useState(5);
+    const [refreshKey, setRefreshKey] = useState(1);
+    //Single trigger state to activate the clock
+    const [isTimerActive, setIsTimerActive] = useState(false);
+    //Holds the frozen victory time string
+    const [finalTime, setFinalTime] = useState("");
+    // NEW SCORE ENGINE TRACK STATE VARIABLES
+    const [pointsEarned, setPointsEarned] = useState(0);
+    const [totalPoints, setTotalPoints] = useState(0);
+    
+    const puzzle = useMemo(() => {
+        const { gridConfig, maxNum, start, transformedPath } = generateZipDotConfig(gridSize, difficulty);
+        const originalBoard = [...gridConfig];
+        const {dotGrid, initialDots, numberBarChoices} = convertToZipDot(gridConfig, maxNum);
+        return { dotGrid, maxNum, start, initialDots, originalBoard, numberBarChoices, transformedPath };
+    }, [gridSize, difficulty, refreshKey]);
 
     useEffect(() => {
         setIsTimerActive(false);
-      }, [gridSize, difficulty, refreshKey]);
+        }, [gridSize, difficulty, refreshKey]);
 
- return (
+  return (
     <div className="game-wrapper">
-      {/* ============================================================================
-          DYNAMIC RESPONSIVE GAME STATUS DASHBOARD
-         ============================================================================ */}
-      <div className="game-dashboard-header">
+        <div className="game-dashboard-header">
         {/* Dynamic difficulty badge that colors itself based on current selection state */}
-        <div className={`dashboard-badge ${difficulty}`}>
-          {difficulty} {gridSize}×{gridSize}
-        </div>
+            <div className={`dashboard-badge ${difficulty}`}>
+            {difficulty} {gridSize}×{gridSize}
+            </div>
         
         {/* Placeholder structural timer block */}
           <Timer 
@@ -59,27 +54,28 @@ const ZipPuzzle = () => {
               setTotalPoints((prev) => prev + earned); // Appends earnings to total balance
           }}
         />
-        {/* Points display label */}
-        <div className="dashboard-points">
-          Points: <strong>{totalPoints}</strong>
+            {/* Points display label */}
+            <div className="dashboard-points">
+            Points: <strong>{totalPoints}</strong>
+            </div>
         </div>
-      </div>
-      {/* Interactive Board Rendering */}
-      <RotateBoard gridConfig={puzzle.scrambledGrid} 
-                   maxNum={puzzle.maxNum} 
-                   start={puzzle.start} 
-                   finalTime={finalTime}
-                   pointsEarned={pointsEarned}
-                   totalPoints={totalPoints}   
-                   onStartGame={() => setIsTimerActive(true)}
-                   onWinGame={() => setIsTimerActive(false)}
-                   onNextLevel={() => setRefreshKey((prev) => prev + 1)}
-      />
-
-      {/* ============================================================================
+        <Board
+            gridConfig={puzzle.dotGrid}
+            initialDots={puzzle.initialDots}
+            numberBarChoices={puzzle.numberBarChoices || []}
+            numberBarColumns={puzzle.numberBarChoices.length || 0}
+            solutionMap={puzzle.transformedPath || {}}
+            finalTime={finalTime}
+            pointsEarned={pointsEarned}
+            totalPoints={totalPoints}   
+            onStartGame={() => setIsTimerActive(true)}
+            onWinGame={() => setIsTimerActive(false)}
+            onNextLevel={() => setRefreshKey((prev) => prev + 1)}
+         />
+        {/* ============================================================================
          RESPONSIVE CONTROL SELECTION ENGINE
          ============================================================================ */}
-      <div className="controls-container">
+        <div className="controls-container">
           
           {/* ROW 1: DIFFICULTY CONTROLS */}
           <div className="control-section">
@@ -113,24 +109,10 @@ const ZipPuzzle = () => {
               </button>
             ))}
           </div>
-
-          {/* Row 2 - Second Row of Options (9x9 to 12x12) */}
-          <div className="button-grid size-cols split-row">
-            {[9, 10, 11, 12].map((size) => (
-              <button
-                key={size}
-                className={`control-btn ${gridSize === size ? "active" : ""}`}
-                onClick={() => setGridSize(size)}
-              >
-                {size}×{size}
-              </button>
-            ))}
-          </div>
         </div>
 
       </div>
-
-      {/* Scoped CSS Styles to keep selectors neatly aligned underneath the board */}
+         {/* Scoped CSS Styles to keep selectors neatly aligned underneath the board */}
       <style>{`
         .game-wrapper {
           display: flex;
@@ -271,10 +253,10 @@ const ZipPuzzle = () => {
 
         /* Active highlight status styling (emerald matched themes) */
         .control-btn.active {
-          background-color: #06b6d4;
-          border-color: #00a490;
+          background-color: #00bda5;
+          // border-color: #00a490;
           color: #ffffff;
-          box-shadow: 0 4px 12px rgba(0, 189, 165, 0.25);
+          // box-shadow: 0 4px 12px rgba(0, 189, 165, 0.25);
         }
 
         .capitalize {
@@ -304,7 +286,8 @@ const ZipPuzzle = () => {
         }
       `}</style>
     </div>
+
   );
 };
 
-export default ZipPuzzle;
+export default ZipDotSandbox;

@@ -2,11 +2,11 @@ import React, { useState, useMemo, useEffect } from "react";
 import RotateBoard from "./RotateBoard.jsx";
 import ScrambledGridConfig from "../assets/ScrambledGridConfig.js";
 import generateZipGridConfig from "../assets/levelGenerator.js";
-import Timer from "./Timer.jsx";
+import ReverseTimer from "./ReverseTimer.jsx";
+import { TIME_LIMITS } from "../assets/timeConfig.js";
 
-const ZipPuzzle = () => {
-  const [difficulty, setDifficulty] = useState("easy");
-  const [gridSize, setGridSize] = useState(5);
+const ZipFlipAscent = () => {
+  const [level, setLevel] = useState(1);
   const [refreshKey, setRefreshKey] = useState(1);
   //Single trigger state to activate the clock
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -15,19 +15,56 @@ const ZipPuzzle = () => {
   // NEW SCORE ENGINE TRACK STATE VARIABLES
   const [pointsEarned, setPointsEarned] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
+  // Tracking state for handling when the timer hits zero
+  const [isTimeOut, setIsTimeOut] = useState(false);
+  
+
+  // ============================================================================
+  // ALGORITHMIC PROGRESSION MATRIX
+  // ============================================================================
+  const { gridSize, difficulty } = useMemo(() => {
+    let currentDifficulty = "easy";
+    let tierRelativeLevel = level;
+
+    if (level <= 160) {
+      // Tier 1: Easy (Levels 1 - 160) -> 5x5 up to 12x12
+      currentDifficulty = "easy";
+      tierRelativeLevel = level;
+    } else if (level <= 320) {
+      // Tier 2: Medium (Levels 161 - 320) -> Resets to 5x5 up to 12x12
+      currentDifficulty = "medium";
+      tierRelativeLevel = level - 160;
+    } else {
+      // Tier 3: Hard Endless (Levels 321+) -> Resets to 5x5 and cycles sizes every 160 stages
+      currentDifficulty = "hard";
+      tierRelativeLevel = ((level - 321) % 160) + 1;
+    }
+
+    // Every 20 levels inside the current difficulty tier, increment grid scale by 1
+    const sizeBracket = Math.floor((tierRelativeLevel - 1) / 20);
+    const calculatedSize = 5 + sizeBracket;
+
+    return { gridSize: calculatedSize, difficulty: currentDifficulty };
+  }, [level]);
+
+  // LOOK UP ALLOCATED DURATION LIMIT FOR DYNAMIC RENDER KEY BASES
+  const levelDuration = useMemo(() => {
+    return TIME_LIMITS[difficulty]?.[gridSize] || 60; // Fallback to 60s safety margin
+  }, [gridSize, difficulty]);
 
   const puzzle = useMemo(() => {
     const { gridConfig, maxNum, start } = generateZipGridConfig(gridSize, difficulty);
     const scrambledGrid = ScrambledGridConfig(gridConfig, 0.8);
     return { scrambledGrid, maxNum, start };
-  }, [gridSize, difficulty, refreshKey]);
+  }, [gridSize, difficulty, level]);
 
 // const { gridConfig, maxNum, start } = generateZipGridConfig(gridSize, difficulty);
 //   const scrambledGrid =  ScrambledGridConfig(gridConfig, 0.8);
 
     useEffect(() => {
         setIsTimerActive(false);
-      }, [gridSize, difficulty, refreshKey]);
+        setIsTimeOut(false);
+      }, [gridSize, difficulty, level]);
 
  return (
     <div className="game-wrapper">
@@ -36,27 +73,25 @@ const ZipPuzzle = () => {
          ============================================================================ */}
       <div className="game-dashboard-header">
         {/* Dynamic difficulty badge that colors itself based on current selection state */}
-        <div className={`dashboard-badge ${difficulty}`}>
-          {difficulty} {gridSize}×{gridSize}
+        <div className={`dashboard-badge ascent-theme ${difficulty}`}>
+          Level<span className="badge-meta"> {level}</span>
         </div>
         
         {/* Placeholder structural timer block */}
-          <Timer 
-            key={`${gridSize}-${difficulty}-${refreshKey}`} 
-            isActive={isTimerActive} 
-            onStop={(timeString, rawSeconds) => {
-              setFinalTime(timeString);
-              
-              // DYNAMIC PERFORMANCE FORMULA ENGINE CALCULATIONS
-              let diffMultiplier = 1;
-              if (difficulty === "medium") diffMultiplier = 1.5;
-              if (difficulty === "hard") diffMultiplier = 2;
-              
-              const penalty = rawSeconds / (gridSize * diffMultiplier);
-              const earned = Math.max(10, Math.round(100 - penalty));
-              
-              setPointsEarned(earned);
-              setTotalPoints((prev) => prev + earned); // Appends earnings to total balance
+        <ReverseTimer 
+          key={`${level}-${refreshKey}`} 
+          duration={levelDuration}
+          isActive={isTimerActive} 
+          onStop={(formattedTimeSpent, secondsLeft) => {
+            setFinalTime(formattedTimeSpent);
+            const scorePercentage = secondsLeft / levelDuration;
+            const earned = Math.max(10, Math.round(scorePercentage * 100));
+            setPointsEarned(earned);
+            setTotalPoints((prev) => prev + earned);
+          }}
+          onTimeOut={() => {
+            setIsTimerActive(false);
+            setIsTimeOut(true); // Triggers the Try Again overlay locally
           }}
         />
         {/* Points display label */}
@@ -65,70 +100,25 @@ const ZipPuzzle = () => {
         </div>
       </div>
       {/* Interactive Board Rendering */}
-      <RotateBoard gridConfig={puzzle.scrambledGrid} 
+      <RotateBoard 
+                   key={`${level}-${refreshKey}`}
+                   gridConfig={puzzle.scrambledGrid} 
                    maxNum={puzzle.maxNum} 
                    start={puzzle.start} 
                    finalTime={finalTime}
                    pointsEarned={pointsEarned}
                    totalPoints={totalPoints}   
-                   onStartGame={() => setIsTimerActive(true)}
+                   isTimeOut={isTimeOut}
+                   onStartGame={() => {
+                    if (!isTimeOut) setIsTimerActive(true);
+                   }}
                    onWinGame={() => setIsTimerActive(false)}
-                   onNextLevel={() => setRefreshKey((prev) => prev + 1)}
+                   onNextLevel={() => setLevel((prev) => prev + 1)}
+                   onTryAgain={() => {
+                    setIsTimeOut(false);
+                    setRefreshKey((prev) => prev + 1); // Bumps layout keys to force clear states
+                  }}
       />
-
-      {/* ============================================================================
-         RESPONSIVE CONTROL SELECTION ENGINE
-         ============================================================================ */}
-      <div className="controls-container">
-          
-          {/* ROW 1: DIFFICULTY CONTROLS */}
-          <div className="control-section">
-            <div className="control-heading">Choose Difficulty</div>
-            <div className="button-grid diff-cols">
-            {["easy", "medium", "hard"].map((diff) => (
-              <button
-                key={diff}
-                className={`control-btn capitalize ${difficulty === diff ? "active" : ""}`}
-                onClick={() => setDifficulty(diff)}
-              >
-                {diff}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ROW 2: GRID SIZE CONTROLS */}
-        <div className="control-section">
-          <div className="control-heading">Choose Grid Size</div>
-          
-          {/* Row 2 - First Row of Options (5x5 to 8x8) */}
-          <div className="button-grid size-cols">
-            {[5, 6, 7, 8].map((size) => (
-              <button
-                key={size}
-                className={`control-btn ${gridSize === size ? "active" : ""}`}
-                onClick={() => setGridSize(size)}
-              >
-                {size}×{size}
-              </button>
-            ))}
-          </div>
-
-          {/* Row 2 - Second Row of Options (9x9 to 12x12) */}
-          <div className="button-grid size-cols split-row">
-            {[9, 10, 11, 12].map((size) => (
-              <button
-                key={size}
-                className={`control-btn ${gridSize === size ? "active" : ""}`}
-                onClick={() => setGridSize(size)}
-              >
-                {size}×{size}
-              </button>
-            ))}
-          </div>
-        </div>
-
-      </div>
 
       {/* Scoped CSS Styles to keep selectors neatly aligned underneath the board */}
       <style>{`
@@ -170,6 +160,9 @@ const ZipPuzzle = () => {
         .dashboard-badge.easy { color: #008000; }
         .dashboard-badge.medium { color: #d97706; }
         .dashboard-badge.hard { color: #ef4444; }
+        .dashboard-badge.ascent-theme {
+          color: #6366f1; 
+        }
 
         .dashboard-timer {
           /* 3. BULLETPROOF FIX: Completely untethers the timer from flex constraints */
@@ -307,4 +300,4 @@ const ZipPuzzle = () => {
   );
 };
 
-export default ZipPuzzle;
+export default ZipFlipAscent;
