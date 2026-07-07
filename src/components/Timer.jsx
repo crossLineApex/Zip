@@ -49,7 +49,7 @@ const Timer = ({ isActive, onStop }) => {
 
   return (
     <div className="dashboard-timer">
-      <span className="timer-icon">⏱️</span> {formatTime(seconds)}
+      <span className="timer-icon">⏳</span> {formatTime(seconds)}
     </div>
   );
 };
