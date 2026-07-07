@@ -66,7 +66,7 @@ const ReverseTimer = ({ duration, isActive, onStop, onTimeOut }) => {
 
   return (
     <div className="dashboard-timer">
-      <span className="timer-icon">⏱️</span> {formatTime(timeLeft)}
+      <span className="timer-icon">⏳</span> {formatTime(timeLeft)}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import PuzzleCard from './PuzzleCard.jsx';
+import PuzzleCard from '../components/PuzzleCard.jsx';
 
 const DailyPuzzleGrid = () => (
   <div className="daily-grid" id="daily">

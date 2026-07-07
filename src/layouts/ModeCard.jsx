@@ -1,14 +1,13 @@
-const ModeCard = ({ title, description, ctaA, ctaB, icon }) => (
-  <article className="mode-card">
-    <div className="mode-icon" aria-hidden="true">
-      {icon}
-    </div>
+const ModeCard = ({classMode, title, description, ctaA, ctaB, icon }) => (
+  <article className={`mode-card ${classMode === 'zip-flip' ? 'zip-flip' : classMode === 'zip-dot' ? 'zip-dot' : ''}`}>
+    {icon && (
+      <div className="mode-icon" aria-hidden="true">
+        {icon}
+      </div>
+    )}
     <h3>{title}</h3>
     <p>{description}</p>
-    <div className="mode-select">
-      <a className="mode-pill a" href="#daily">{ctaA}</a>
-      <a className="mode-pill b" href="#daily">{ctaB}</a>
-    </div>
+  
   </article>
 );
 

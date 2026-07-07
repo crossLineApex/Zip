@@ -2,11 +2,13 @@ import { useState } from 'react';
 import './App.css';
 import Header from './layouts/Header.jsx';
 import SectionHeading from './layouts/SectionHeading.jsx';
-import DailyPuzzleGrid from './components/DailyPuzzleGrid.jsx';
+import DailyPuzzleGrid from './layouts/DailyPuzzleGrid.jsx';
 import ModeCard from './layouts/ModeCard.jsx';
 import FAQItem from './layouts/FAQItem.jsx';
 import ModeSelectionPanel from './layouts/ModeSelectionPanel.jsx';
 import SelectionStatus from './layouts/SelectionStatus.jsx';
+import PuzzleCard from './components/PuzzleCard.jsx';
+
 
 function App() {
   const [view, setView] = useState('daily');
@@ -55,7 +57,7 @@ function App() {
                 />
                 <div className="selection-status-row">
                   <SelectionStatus
-                    label="Current puzzle and puzzle"
+                    label="Current puzzle and mode"
                     game={selectedPuzzle === 'dot' ? 'Zip Dot' : 'Zip Flip'}
                     mode={selectedMode === 'ascent' ? 'Ascent' : 'Sandbox'}
                   />
@@ -68,6 +70,34 @@ function App() {
         <div className="divider" aria-hidden="true">
           <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
             <path d="M0,20 C180,0 320,0 480,20 C640,40 780,40 960,20 C1060,8 1140,8 1200,20" fill="none" stroke="var(--zipa-line)" strokeWidth="2" />
+          </svg>
+        </div>
+
+        <section id="games">
+          <div className="wrap">
+            <SectionHeading
+              eyebrow="Games"
+              title="Two games, one mind"
+              description="Switch between calm and challenging runs depending on how much time you want to spend solving."
+            />
+            <div className="modes-grid">
+              <PuzzleCard
+                variant="a"
+                label="Zip Flip"
+              />
+              <PuzzleCard
+                variant="b"
+                label="Zip Dot"
+              />
+            </div>
+          </div>
+        </section>
+
+        <div class="divider">
+          <svg viewBox="0 0 1120 34" preserveAspectRatio="none">
+            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="0" cy="17" r="3.5" fill="var(--zipb)"/>
+            <circle cx="1120" cy="17" r="3.5" fill="var(--zipa)"/>
           </svg>
         </div>
 
@@ -88,9 +118,7 @@ function App() {
             <div className="modes-grid">
               <ModeCard
                 title="Sandbox"
-                description="Unlimited, freshly generated puzzles at whatever difficulty and grid size you choose. No streaks, no pressure."
-                ctaA="Try Sandbox · Flip"
-                ctaB="Try Sandbox · Dot"
+                description="Unlimited, freshly generated puzzles at Easy, Medium and Hard difficulty with any grid size from 5 x 5 to 12 x 12 you choose. No streaks, no pressure."
                 icon={
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                     <rect x="2" y="2" width="18" height="18" rx="3" stroke="var(--zipa)" strokeWidth="1.6"/>
@@ -100,9 +128,7 @@ function App() {
               />
               <ModeCard
                 title="Ascent"
-                description="A fixed run of levels that gets harder as you climb. Clear one to unlock the next — a real sense of progress!"
-                ctaA="Try Ascent · Flip"
-                ctaB="Try Ascent · Dot"
+                description="A fixed run of levels that gets harder as you climb. Ohh and clock is ticking. Clear one to unlock the next level — a real sense of progress!"
                 icon={
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
                     <path d="M4 17.5L9 9L12.5 12.5L18 4" stroke="var(--zipa)" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -114,62 +140,122 @@ function App() {
           </div>
         </section>
 
+        <div class="divider">
+          <svg viewBox="0 0 1120 34" preserveAspectRatio="none">
+            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="0" cy="17" r="3.5" fill="var(--zipb)"/>
+            <circle cx="1120" cy="17" r="3.5" fill="var(--zipa)"/>
+          </svg>
+        </div>
+
         <section id="how-to-play">
           <div className="wrap">
             <SectionHeading
               eyebrow="How to play"
-              title="Connect every cell in order"
-              description="Follow the numbered path without breaking the line. The puzzle is solved when the route is complete and continuous."
+              title="Four Rules, one path"
+              description="Both Zip Flip and Zip Dot follow the same core rules — only the grid layouts differ."
             />
-            <div className="steps">
-              <div className="step-card">
-                <div className="step-num">01 / Start</div>
-                <div className="step-board">
-                  <svg viewBox="0 0 140 140" aria-hidden="true">
-                    <rect x="10" y="10" width="120" height="120" rx="16" fill="#fff" />
-                    <circle cx="36" cy="36" r="8" fill="#4A4FE0" />
-                    <circle cx="104" cy="104" r="8" fill="#1E8F6B" />
-                  </svg>
+            <div class="steps">
+                <div class="step-card">
+                  <span class="step-num">01</span>
+                  <div class="step-board">
+                    <svg viewBox="0 0 125 125" xmlns="http://www.w3.org/2000/svg">
+                      <g stroke="#fff" stroke-width="1">
+                        <line x1="10" y1="10" x2="115" y2="10"></line>
+                        <line x1="10" y1="45" x2="115" y2="45"></line>
+                        <line x1="10" y1="80" x2="115" y2="80"></line>
+                        <line x1="10" y1="115" x2="115" y2="115"></line>
+                        
+                        <line x1="10" y1="10" x2="10" y2="115"></line>
+                        <line x1="45" y1="10" x2="45" y2="115"></line>
+                        <line x1="80" y1="10" x2="80" y2="115"></line>
+                        <line x1="115" y1="10" x2="115" y2="115"></line>
+                      </g>
+
+                      <path d="M27.5,27.5 L97.5,27.5 L97.5,62.5 L27.5,62.5 L27.5,97.5 L97.5,97.5" 
+                            stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+
+                      <circle cx="27.5" cy="27.5" r="9" fill="var(--zipa)"></circle>
+                      <text x="27.5" y="31" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">1</text>
+
+                      <circle cx="62.5" cy="62.5" r="9" fill="var(--zipa)"></circle>
+                      <text x="62.5" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">2</text>
+
+                      <circle cx="97.5" cy="97.5" r="9" fill="var(--zipa)"></circle>
+                      <text x="97.5" y="101" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">3</text>
+                    </svg>
+
+                  </div>
+                  <h4>Connect in order</h4>
+                  <p>Only one line from starting from 1 → 2 → 3, and so on, in numerical order, passing through each cell.</p>
                 </div>
-                <h4>Begin with the first number</h4>
-                <p>Choose the starting node and trace outward from there.</p>
-              </div>
-              <div className="step-card">
-                <div className="step-num">02 / Trace</div>
-                <div className="step-board">
-                  <svg viewBox="0 0 140 140" aria-hidden="true">
-                    <rect x="10" y="10" width="120" height="120" rx="16" fill="#fff" />
-                    <path d="M40 40 L70 40 L70 100 L100 100" stroke="#4A4FE0" strokeWidth="6" strokeLinecap="round" />
-                  </svg>
+
+                <div class="step-card">
+                  <span class="step-num">02</span>
+                  <div class="step-board">
+                    <svg viewBox="0 0 120 120">
+                      <g stroke="#fff" stroke-width="1">
+                        <line x1="10" y1="10" x2="110" y2="10"/><line x1="10" y1="45" x2="110" y2="45"/>
+                        <line x1="10" y1="80" x2="110" y2="80"/><line x1="10" y1="115" x2="110" y2="115"/>
+                        <line x1="10" y1="10" x2="10" y2="115"/><line x1="45" y1="10" x2="45" y2="115"/>
+                        <line x1="80" y1="10" x2="80" y2="115"/><line x1="110" y1="10" x2="110" y2="115"/>
+                      </g>
+                      <path d="M27.5,27.5 L62.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L27.5,62.5 L27.5,97.5 L62.5,97.5 L97.5,97.5" fill="none" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <h4>Fill every cell</h4>
+                  <p>The path must pass through every square on the grid — no cell left empty.</p>
                 </div>
-                <h4>Draw one continuous line</h4>
-                <p>Each move must connect neatly to the next cell in sequence.</p>
-              </div>
-              <div className="step-card">
-                <div className="step-num">03 / Check</div>
-                <div className="step-board">
-                  <svg viewBox="0 0 140 140" aria-hidden="true">
-                    <rect x="10" y="10" width="120" height="120" rx="16" fill="#fff" />
-                    <path d="M40 70 L70 70 L70 40" stroke="#1E8F6B" strokeWidth="6" strokeLinecap="round" />
-                  </svg>
+
+                <div class="step-card">
+                  <span class="step-num">03</span>
+                  <div class="step-board">
+                    <svg viewBox="0 0 120 120">
+                      <g stroke="#fff" stroke-width="1">
+                        <line x1="10" y1="10" x2="110" y2="10"/><line x1="10" y1="45" x2="110" y2="45"/>
+                        <line x1="10" y1="80" x2="110" y2="80"/><line x1="10" y1="115" x2="110" y2="115"/>
+                        <line x1="10" y1="10" x2="10" y2="115"/><line x1="45" y1="10" x2="45" y2="115"/>
+                        <line x1="80" y1="10" x2="80" y2="115"/><line x1="110" y1="10" x2="110" y2="115"/>
+                      </g>
+                      <path d="M27.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L62.5,97.5" fill="none" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M62.5,97.5 L62.5,27.5" fill="none" stroke="#D64545" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 6"/>
+                      <circle cx="62.5" cy="62.5" r="6" fill="#D64545"/>
+                    </svg>
+                  </div>
+                  <h4>Never cross yourself</h4>
+                  <p>The line moves only up, down, left or right — and can't touch a cell it's already used.</p>
                 </div>
-                <h4>Confirm each step</h4>
-                <p>Use the numbering as a guide so the route stays in order.</p>
-              </div>
-              <div className="step-card">
-                <div className="step-num">04 / Solve</div>
-                <div className="step-board">
-                  <svg viewBox="0 0 140 140" aria-hidden="true">
-                    <rect x="10" y="10" width="120" height="120" rx="16" fill="#fff" />
-                    <path d="M40 40 L40 100 L100 100 L100 40" stroke="#D89A1F" strokeWidth="6" strokeLinecap="round" />
-                  </svg>
+
+                <div class="step-card">
+                  <span class="step-num">04</span>
+                  <div class="step-board">
+                    <svg viewBox="0 0 120 120">
+                      <rect x="10" y="10" width="100" height="100" rx="6" fill="var(--zipa-soft)"/>
+                      <g stroke="#fff" stroke-width="1">
+                        <line x1="10" y1="10" x2="110" y2="10"/><line x1="10" y1="45" x2="110" y2="45"/>
+                        <line x1="10" y1="80" x2="110" y2="80"/><line x1="10" y1="115" x2="110" y2="115"/>
+                        <line x1="10" y1="10" x2="10" y2="115"/><line x1="45" y1="10" x2="45" y2="115"/>
+                        <line x1="80" y1="10" x2="80" y2="115"/><line x1="110" y1="10" x2="110" y2="115"/>
+                      </g>
+                      <path d="M27.5,27.5 L62.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L27.5,62.5 L27.5,97.5 L62.5,97.5 L97.5,97.5" fill="none" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="27.5" cy="27.5" r="6" fill="var(--zipa)"/>
+                      <circle cx="97.5" cy="97.5" r="6" fill="var(--zipa)"/>
+                    </svg>
+                  </div>
+                  <h4>Full grid, solved</h4>
+                  <p>Once every cell is covered and the numbers connect in order, the puzzle is complete.</p>
                 </div>
-                <h4>Finish the full route</h4>
-                <p>When every numbered node is linked, the puzzle is complete.</p>
-              </div>
             </div>
           </div>
         </section>
+
+        <div class="divider">
+          <svg viewBox="0 0 1120 34" preserveAspectRatio="none">
+            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <circle cx="0" cy="17" r="3.5" fill="var(--zipb)"/>
+            <circle cx="1120" cy="17" r="3.5" fill="var(--zipa)"/>
+          </svg>
+        </div>
 
         <section id="faq">
           <div className="wrap">
