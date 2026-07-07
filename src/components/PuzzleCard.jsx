@@ -170,11 +170,23 @@ const PuzzleCard = ({ variant, label}) => {
         <div className="pc-info">
           {isZipFlip ? (
             <>
-            <p>Tap non numbered grid tiles to flip their orientations and rotate the path segments</p>
+            <p>Tap non numbered grid tiles to flip their orientations</p>
+            <p>rotate the path segments</p>
             <p>Align every single piece correctly to form one seamless line across the entire board.</p>
             </>
           ) : (
-            <p className="pc-desc">A fixed run of levels that gets harder as you climb. Ohh and clock is ticking. Clear one to unlock the next — a real sense of progress!</p>
+            <>
+            <p>The path is already drawn, also 1 and the last number are already revealed</p>
+            <p>Place remaining numbers on the path</p>
+            <p>The dots above the grid are the column markers, and the dots to the left of the grid are the row markers telling how many numbered cells can be there</p>
+            <svg>
+                <circle cx="47" cy="10" r="3" fill="#ff5252" />
+                <text x="140" y="13" text-anchor="middle" font-family="JetBrains Mono" font-size="16" fill="#5B5F66"> - numbers revealed already</text>
+
+                <circle cx="47" cy="50" r="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1" />
+                <text x="122" y="53" text-anchor="middle" font-family="JetBrains Mono" font-size="16" fill="#5B5F66"> - numbers remaining</text>
+            </svg>
+            </>
           )}
         </div>
       </div>
@@ -183,41 +195,3 @@ const PuzzleCard = ({ variant, label}) => {
 };
 
 export default PuzzleCard;
-
-        // <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-        //   <g stroke="#fff" stroke-width="1">
-        //     <line x1="20" y1="20" x2="182.5" y2="20" />
-        //     <line x1="20" y1="74" x2="182.5" y2="74" />
-        //     <line x1="20" y1="128" x2="182.5" y2="128" />
-        //     <line x1="20" y1="182" x2="182.5" y2="182" />
-        //     <line x1="20" y1="20" x2="20" y2="182" />
-        //     <line x1="74" y1="20" x2="74" y2="182" />
-        //     <line x1="128" y1="20" x2="128" y2="182" />
-        //     <line x1="182" y1="20" x2="182" y2="182" />
-        //   </g>
-
-        //   {/* dots above row 1, one per column, sitting above the top grid line */}
-        //   <circle cx="47" cy="10" r="3" fill="#ff5252" />
-        //   <circle cx="101" cy="10" r="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1" />
-        //   <circle cx="155" cy="10" r="3" fill="#ff5252" />
-
-        //   {/* dots left of column 1, one per row, sitting outside the left grid line */}
-        //   <circle cx="10" cy="47" r="3" fill="#ff5252" />
-        //   <circle cx="10" cy="101" r="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1" />
-        //   <circle cx="10" cy="155" r="3" fill="#ff5252" />
-
-        //   <path
-        //     d="M47,47 L128,47 L155,47 L155,101 L74,101 L47,101 L47,128 L47,155 L155,155"
-        //     stroke="var(--zipb)"
-        //     stroke-width="4"
-        //     stroke-linecap="round"
-        //     stroke-linejoin="round"
-        //     fill="none"
-        //   />
-
-        //   <circle cx="47" cy="47" r="9" fill="var(--zipb)"></circle>
-        //   <text x="47" y="51" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">1</text>
-
-        //   <circle cx="155" cy="155" r="9" fill="var(--zipb)"></circle>
-        //   <text x="155" y="159" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">3</text>
-        // </svg>
