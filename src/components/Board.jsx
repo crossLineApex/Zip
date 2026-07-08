@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import './gameStyles.css';
 
 const Board = ({
   gridConfig,
@@ -191,7 +192,7 @@ const Board = ({
   };
 
   return (
-    <div className="game-layout">
+    <div className="game-layout board-component">
       <div className="puzzle-container">
         <div className="grid-board">
           {gridConfig.map((row, rowIndex) =>
@@ -308,13 +309,13 @@ const Board = ({
         </div>
 
         <style>{`
-        .game-layout {
+        .board-component.game-layout {
             display: block;
             width: 100%;
             box-sizing: border-box;
         }
 
-        .dots-container {
+        .board-component .dots-container {
           display: flex;
           flex-wrap: wrap;
           gap: ${rowCount >= 8 ? "2px" : "4px"}; 
@@ -328,7 +329,7 @@ const Board = ({
           box-sizing: border-box;
         }
 
-        .indicator-dot {
+        .board-component .indicator-dot {
           width: ${s.dot}px;
           height: ${s.dot}px;
           border-radius: 50%;
@@ -338,7 +339,7 @@ const Board = ({
         .indicator-dot.d { background-color: #cbd5e1; border: 1px solid #94a3b8; }
         .indicator-dot.a { background-color: #ff5252; box-shadow: 0 0 6px rgba(255, 82, 82, 0.4); }
 
-        .number-bar {
+        .board-component .number-bar {
           display: flex;
           flex-wrap: wrap;       
           gap: 6px;              
@@ -352,7 +353,7 @@ const Board = ({
           user-select: none;
         }
   
-        .bar-cell {
+        .board-component .bar-cell {
           background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px;        
           display: flex; align-items: center; justify-content: center;
           width: 36px; aspect-ratio: 1 / 1; font-weight: 700; font-size: 14px;           
@@ -366,9 +367,9 @@ const Board = ({
         .bar-cell.disabled { background-color: #f1f5f9; border-color: #e2e8f0; color: #cbd5e1; cursor: not-allowed; pointer-events: none; transform: none !important; box-shadow: none !important; }
         .bar-cell:active { transform: scale(0.95); }
 
-        .puzzle-container { display: flex; justify-content: center; align-items: center; padding: 20px; font-family: system-ui, -apple-system, sans-serif; }
+        .board-component .puzzle-container { display: flex; justify-content: center; align-items: center; font-family: system-ui, -apple-system, sans-serif; }
         
-        .grid-board {
+        .board-component .grid-board {
           display: grid; 
           grid-template-columns: repeat(${rowCount}, 1fr); 
           grid-template-rows: repeat(${rowCount}, 1fr);
@@ -384,26 +385,26 @@ const Board = ({
           position: relative;
         }
 
-        .grid-cell {
+        .board-component .grid-cell {
           position: relative; background-color: #ffffff; border-radius: ${rowCount >= 8 ? "4px" : "8px"}; 
           cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease;
           display: flex; align-items: center; justify-content: center; user-select: none;
         }
 
-        .grid-cell:hover { background-color: #f1f5f9; }
-        .grid-cell.clicked { background-color: #d7e3cc; }
-        .grid-cell.dot { background-color: #ccf1ed; pointer-events: none; }
+        .board-component .grid-cell:hover { background-color: #f1f5f9; }
+        .board-component .grid-cell.clicked { background-color: #d7e3cc; }
+        .board-component .grid-cell.dot { background-color: #ccf1ed; pointer-events: none; }
 
-        .line-segment { position: absolute; background-color: #00bda5; z-index: 1; pointer-events: none; }
+        .board-component .line-segment { position: absolute; background-color: #00bda5; z-index: 1; pointer-events: none; }
 
-        .span-vertical { top: 0; bottom: 0; left: calc(50% - ${s.line / 2}px); width: ${s.line}px; }
-        .span-horizontal { left: 0; right: 0; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
-        .span-half-top { top: 0; height: 50%; left: calc(50% - ${s.line / 2}px); width: ${s.line}px; }
-        .span-half-bottom { top: 50%; height: 50%; left: calc(50% - ${s.line / 2}px); width: ${s.line}px; }
-        .span-half-left { left: 0; width: 50%; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
-        .span-half-right { left: 50%; width: 50%; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
+        .board-component .span-vertical { top: 0; bottom: 0; left: calc(50% - ${s.line / 2}px); width: ${s.line}px; }
+        .board-component .span-horizontal { left: 0; right: 0; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
+        .board-component .span-half-top { top: 0; height: 50%; left: calc(50% - ${s.line / 2}px); width: ${s.line}px; }
+        .board-component .span-half-bottom { top: 50%; height: 50%; left: calc(50% - ${s.line / 2}px); width: ${s.line}px; }
+        .board-component .span-half-left { left: 0; width: 50%; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
+        .board-component .span-half-right { left: 50%; width: 50%; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
 
-        .number-badge { position: relative; z-index: 3; width: ${s.badge}px; height: ${s.badge}px; font-size: ${s.font}px; background-color: #0f172a; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; border: ${rowCount >= 8 ? "1px" : "2px"} solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .board-component .number-badge { position: relative; z-index: 3; width: ${s.badge}px; height: ${s.badge}px; font-size: ${s.font}px; background-color: #0f172a; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; border: ${rowCount >= 8 ? "1px" : "2px"} solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         
         @keyframes cellErrorFill {
           0% { background-color: #ffffff; box-shadow: none; transform: scale(1); }
@@ -411,9 +412,30 @@ const Board = ({
           70% { background-color: #ff1a1a; border-color: #ff4d4d; box-shadow: 0 0 14px rgba(239, 68, 68, 0.6); transform: scale(1.04); }
           100% { background-color: #ffffff; box-shadow: none; transform: scale(1); }
         }
-        .grid-cell.error-flash { animation: cellErrorFill 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 10; }
+        .board-component .grid-cell.error-flash { animation: cellErrorFill 0.8s cubic-bezier(0.25, 1, 0.5, 1); z-index: 10; }
 
-        .board-victory-glow .line-segment {
+        .App.theme-dark .board-component .grid-board {
+          background-color: var(--paper-dim);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .App.theme-dark .board-component .grid-cell {
+          background-color: var(--paper);
+          border: 1px solid var(--line);
+          color: var(--ink);
+        }
+
+        .App.theme-dark .board-component .grid-cell:hover { background-color: var(--paper-dim); }
+        .App.theme-dark .board-component .grid-cell.clicked { background-color: var(--zipa-soft); }
+        .App.theme-dark .board-component .grid-cell.dot { background-color: var(--paper-dim); border: none }
+        .App.theme-dark .board-component .indicator-dot.d { background-color: rgba(148, 161, 179, 0.3); border-color: var(--ink-faint); }
+        .App.theme-dark .board-component .number-badge { background-color: var(--ink); color: var(--paper); border-color: var(--paper-dim); }
+        .App.theme-dark .board-component .bar-cell { background-color: var(--paper-dim); border-color: var(--line); color: var(--ink-soft); }
+        .App.theme-dark .board-component .bar-cell:hover { background-color: var(--paper); color: var(--ink); }
+        .App.theme-dark .board-component .bar-cell.selected { background-color: var(--zipa); color: var(--paper); }
+        .App.theme-dark .board-component .bar-cell.disabled { background-color: rgba(148, 161, 179, 0.16); border-color: var(--line); color: var(--ink-faint); }
+
+        .board-component .board-victory-glow .line-segment {
           animation: trackNeonPulse 1.2s infinite alternate ease-in-out;
           filter: drop-shadow(0 0 8px #00bda5) drop-shadow(0 0 16px rgba(0, 189, 165, 0.8));
         }
@@ -423,7 +445,7 @@ const Board = ({
           100% { opacity: 1; filter: brightness(1.2) drop-shadow(0 0 14px #00bda5); }
         }
 
-        .victory-overlay {
+        .board-component .victory-overlay {
           position: absolute;
           top: 0; left: 0; right: 0; bottom: 0;
           grid-column: 1 / -1;
@@ -442,21 +464,21 @@ const Board = ({
         }
 
         /* Try Again Text Accents Override Style */
-        .victory-card h2.timeout-title {
+        .board-component .victory-card h2.timeout-title {
           color: #ff5252;
         }
 
         /* Try Again Selection Button Accent Overrides Style */
-        .next-level-btn.timeout-btn {
+        .board-component .next-level-btn.timeout-btn {
           background-color: #ff5252;
           box-shadow: 0 4px 12px rgba(255, 82, 82, 0.25);
         }
-        .next-level-btn.timeout-btn:hover {
+        .board-component .next-level-btn.timeout-btn:hover {
           background-color: #e04343;
           box-shadow: 0 6px 16px rgba(255, 82, 82, 0.35);
         }
 
-        .victory-card {
+        .board-component .victory-card {
           background: #ffffff;
           padding: 24px 20px;
           border-radius: 20px;
@@ -470,10 +492,10 @@ const Board = ({
           box-sizing: border-box;
         }
 
-        .victory-card h2 { margin: 0 0 4px 0; font-size: 20px; font-weight: 800; color: #1e152a; letter-spacing: -0.01em; }
-        .victory-card p { margin: 0 0 16px 0; font-size: 12px; color: #64748b; line-height: 1.4; font-weight: 500; }
+        .board-component .victory-card h2 { margin: 0 0 4px 0; font-size: 20px; font-weight: 800; color: #1e152a; letter-spacing: -0.01em; }
+        .board-component .victory-card p { margin: 0 0 16px 0; font-size: 12px; color: #64748b; line-height: 1.4; font-weight: 500; }
 
-        .victory-stats-container {
+        .board-component .victory-stats-container {
           width: 100%;
           background-color: #f8fafc;
           border: 1px solid #e2e8f0;
@@ -486,18 +508,18 @@ const Board = ({
           gap: 8px;
         }
 
-        .stats-row.split-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px; }
-        .stat-box { display: flex; flex-direction: column; }
-        .stat-box.align-left { text-align: left; }
-        .stat-box.align-right { text-align: right; }
-        .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; font-weight: 600; margin-bottom: 1px; }
-        .stat-box strong { color: #0f172a; font-size: 14px; font-weight: 700; }
-        .stat-box strong.points-plus { color: #00bda5; }
-        .stats-row.center-row { display: flex; justify-content: center; align-items: center; padding-top: 2px; }
-        .stat-total { font-size: 12px; color: #475569; font-weight: 600; }
-        .stat-total strong { font-size: 14px; font-weight: 800; color: #1e1b4b; margin-left: 2px; }
+        .board-component .stats-row.split-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px; }
+        .board-component .stat-box { display: flex; flex-direction: column; }
+        .board-component .stat-box.align-left { text-align: left; }
+        .board-component .stat-box.align-right { text-align: right; }
+        .board-component .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; font-weight: 600; margin-bottom: 1px; }
+        .board-component .stat-box strong { color: #0f172a; font-size: 14px; font-weight: 700; }
+        .board-component .stat-box strong.points-plus { color: #00bda5; }
+        .board-component .stats-row.center-row { display: flex; justify-content: center; align-items: center; padding-top: 2px; }
+        .board-component .stat-total { font-size: 12px; color: #475569; font-weight: 600; }
+        .board-component .stat-total strong { font-size: 14px; font-weight: 800; color: #1e1b4b; margin-left: 2px; }
 
-        .next-level-btn {
+        .board-component .next-level-btn {
           width: 100%;
           background-color: #00bda5;
           color: #ffffff;
@@ -512,29 +534,29 @@ const Board = ({
           box-shadow: 0 4px 12px rgba(0, 189, 165, 0.25);
         }
 
-        .next-level-btn:hover { background-color: #00a48f; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 189, 165, 0.35); }
-        .next-level-btn:active { transform: scale(0.97) translateY(0); box-shadow: 0 2px 6px rgba(0, 189, 165, 0.2); }
+        .board-component .next-level-btn:hover { background-color: #00a48f; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 189, 165, 0.35); }
+        .board-component .next-level-btn:active { transform: scale(0.97) translateY(0); box-shadow: 0 2px 6px rgba(0, 189, 165, 0.2); }
 
         @keyframes smoothFadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes dynamicScalePop { from { opacity: 0; transform: scale(0.82) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        .confetti-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; border-radius: 24px; }
-        .confetti { position: absolute; width: 5px; height: 8px; border-radius: 1.5px; opacity: 0.8; top: -15px; animation: particleRain 2.2s infinite linear; }
+        .board-component .confetti-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; border-radius: 24px; }
+        .board-component .confetti { position: absolute; width: 5px; height: 8px; border-radius: 1.5px; opacity: 0.8; top: -15px; animation: particleRain 2.2s infinite linear; }
 
-        .confetti.p-0  { left: 8%;  background: #00bda5; animation-delay: 0.1s; animation-duration: 2.0s; }
-        .confetti.p-1  { left: 22%; background: #ff4a5a; animation-delay: 0.6s; animation-duration: 2.5s; }
-        .confetti.p-2  { left: 36%; background: #ffca28; animation-delay: 0.2s; animation-duration: 2.2s; }
-        .confetti.p-3  { left: 50%; background: #9c27b0; animation-delay: 0.9s; animation-duration: 2.8s; }
-        .confetti.p-4  { left: 64%; background: #00bda5; animation-delay: 0.4s; animation-duration: 1.9s; }
-        .confetti.p-5  { left: 78%; background: #ff4a5a; animation-delay: 0.8s; animation-duration: 2.4s; }
-        .confetti.p-6  { left: 92%; background: #ffca28; animation-delay: 1.2s; animation-duration: 2.6s; }
-        .confetti.p-7  { left: 15%; background: #9c27b0; animation-delay: 0.3s; animation-duration: 2.1s; }
-        .confetti.p-8  { left: 29%; background: #00bda5; animation-delay: 1.4s; animation-duration: 2.9s; }
-        .confetti.p-9  { left: 43%; background: #ff4a5a; animation-delay: 0.5s; animation-duration: 2.3s; }
-        .confetti.p-10 { left: 58%; background: #ffca28; animation-delay: 1.0s; animation-duration: 2.4s; }
-        .confetti.p-11 { left: 72%; background: #9c27b0; animation-delay: 0.7s; animation-duration: 2.7s; }
-        .confetti.p-12 { left: 85%; background: #00bda5; animation-delay: 1.6s; animation-duration: 2.8s; }
-        .confetti.p-13 { left: 95%; background: #ff4a5a; animation-delay: 0.2s; animation-duration: 2.2s; }
+        .board-component .confetti.p-0  { left: 8%;  background: #00bda5; animation-delay: 0.1s; animation-duration: 2.0s; }
+        .board-component .confetti.p-1  { left: 22%; background: #ff4a5a; animation-delay: 0.6s; animation-duration: 2.5s; }
+        .board-component .confetti.p-2  { left: 36%; background: #ffca28; animation-delay: 0.2s; animation-duration: 2.2s; }
+        .board-component .confetti.p-3  { left: 50%; background: #9c27b0; animation-delay: 0.9s; animation-duration: 2.8s; }
+        .board-component .confetti.p-4  { left: 64%; background: #00bda5; animation-delay: 0.4s; animation-duration: 1.9s; }
+        .board-component .confetti.p-5  { left: 78%; background: #ff4a5a; animation-delay: 0.8s; animation-duration: 2.4s; }
+        .board-component .confetti.p-6  { left: 92%; background: #ffca28; animation-delay: 1.2s; animation-duration: 2.6s; }
+        .board-component .confetti.p-7  { left: 15%; background: #9c27b0; animation-delay: 0.3s; animation-duration: 2.1s; }
+        .board-component .confetti.p-8  { left: 29%; background: #00bda5; animation-delay: 1.4s; animation-duration: 2.9s; }
+        .board-component .confetti.p-9  { left: 43%; background: #ff4a5a; animation-delay: 0.5s; animation-duration: 2.3s; }
+        .board-component .confetti.p-10 { left: 58%; background: #ffca28; animation-delay: 1.0s; animation-duration: 2.4s; }
+        .board-component .confetti.p-11 { left: 72%; background: #9c27b0; animation-delay: 0.7s; animation-duration: 2.7s; }
+        .board-component .confetti.p-12 { left: 85%; background: #00bda5; animation-delay: 1.6s; animation-duration: 2.8s; }
+        .board-component .confetti.p-13 { left: 95%; background: #ff4a5a; animation-delay: 0.2s; animation-duration: 2.2s; }
 
         @keyframes particleRain {
           0% { top: -15px; transform: translateX(0) rotate(0deg); }
@@ -543,28 +565,28 @@ const Board = ({
         }
 
         @media (max-width: 480px) {
-            .span-vertical, .span-half-top, .span-half-bottom { width: ${s.mLine}px; left: calc(50% - ${s.mLine / 2}px); }
-            .span-horizontal, .span-half-left, .span-half-right { height: ${s.mLine}px; top: calc(50% - ${s.mLine / 2}px); }
-            .number-badge { width: ${s.mBadge}px; height: ${s.mBadge}px; font-size: ${s.mFont}px; border-width: 1px; }
-            .grid-board { gap: ${s.mGap}px; padding: 8px; border-radius: 16px; }
-            .number-bar { gap: 4px; margin: 12px auto 20px auto; }
-            .bar-cell { width: 28px; font-size: 11px; border-radius: 6px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02); }
-            .bar-cell.selected { box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2); }
-            .indicator-dot { width: ${s.mDot}px; height: ${s.mDot}px; }
-            .dots-container { gap: 1px; padding: 1px; }
+            .board-component .span-vertical, .board-component .span-half-top, .board-component .span-half-bottom { width: ${s.mLine}px; left: calc(50% - ${s.mLine / 2}px); }
+            .board-component .span-horizontal, .board-component .span-half-left, .board-component .span-half-right { height: ${s.mLine}px; top: calc(50% - ${s.mLine / 2}px); }
+            .board-component .number-badge { width: ${s.mBadge}px; height: ${s.mBadge}px; font-size: ${s.mFont}px; border-width: 1px; }
+            .board-component .grid-board { gap: ${s.mGap}px; padding: 8px; border-radius: 16px; }
+            .board-component .number-bar { gap: 4px; margin: 12px auto 20px auto; }
+            .board-component .bar-cell { width: 28px; font-size: 11px; border-radius: 6px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02); }
+            .board-component .bar-cell.selected { box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2); }
+            .board-component .indicator-dot { width: ${s.mDot}px; height: ${s.mDot}px; }
+            .board-component .dots-container { gap: 1px; padding: 1px; }
 
-            .victory-overlay { padding: 8px; border-radius: 16px; }
-            .victory-card { padding: 14px 12px; border-radius: 16px; max-width: 220px; box-shadow: 0 12px 24px rgba(15, 23, 42, 0.4); }
-            .victory-card h2 { font-size: 15px; margin-bottom: 2px; }
-            .victory-card p { font-size: 10px; margin-bottom: 10px; }
-            .victory-stats-container { padding: 6px 8px; margin-bottom: 12px; gap: 4px; border-radius: 8px; }
-            .stats-row.split-row { padding-bottom: 4px; }
-            .stat-label { font-size: 8px; }
-            .stat-box strong { font-size: 11px; }
-            .stat-total { font-size: 10px; }
-            .stat-total strong { font-size: 12px; }
-            .next-level-btn { padding: 7px 0; font-size: 11px; border-radius: 6px; }
-            .confetti-container { border-radius: 16px; }
+            .board-component .victory-overlay { padding: 8px; border-radius: 16px; }
+            .board-component .victory-card { padding: 14px 12px; border-radius: 16px; max-width: 220px; box-shadow: 0 12px 24px rgba(15, 23, 42, 0.4); }
+            .board-component .victory-card h2 { font-size: 15px; margin-bottom: 2px; }
+            .board-component .victory-card p { font-size: 10px; margin-bottom: 10px; }
+            .board-component .victory-stats-container { padding: 6px 8px; margin-bottom: 12px; gap: 4px; border-radius: 8px; }
+            .board-component .stats-row.split-row { padding-bottom: 4px; }
+            .board-component .stat-label { font-size: 8px; }
+            .board-component .stat-box strong { font-size: 11px; }
+            .board-component .stat-total { font-size: 10px; }
+            .board-component .stat-total strong { font-size: 12px; }
+            .board-component .next-level-btn { padding: 7px 0; font-size: 11px; border-radius: 6px; }
+            .board-component .confetti-container { border-radius: 16px; }
           }
       `}</style>
       </div>

@@ -160,7 +160,7 @@ const ZipFlipSandbox = () => {
 
         .dashboard-badge {
           font-weight: 700;
-          font-size: 15px;
+          font-size: 14px;
           text-transform: capitalize;
           transition: color 0.2s ease;
           white-space: nowrap;
@@ -202,6 +202,14 @@ const ZipFlipSandbox = () => {
         .dashboard-points strong {
           font-weight: 800;
           color: #0f172a;
+        }
+
+        .App.theme-dark .dashboard-points {
+          color: var(--ink-soft);
+        }
+
+        .App.theme-dark .dashboard-points strong {
+          color: var(--ink);
         }
 
         .controls-container {

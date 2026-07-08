@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import './gameStyles.css';
 
 const RotateBoard = ({ 
   gridConfig,
@@ -220,7 +221,7 @@ const RotateBoard = ({
   }[rowCount] || { line: 10, badge: 26, font: 13, gap: 6, mLine: 7, mBadge: 16, mFont: 9, mGap: 3 };
 
  return (
-  <div className="puzzle-container">
+  <div className="puzzle-container rotate-board-component">
     {/* This relative anchor container locks the overlay exactly to the board dimensions */}
     <div className="board-wrapper">
       
@@ -325,7 +326,7 @@ const RotateBoard = ({
 
     {/* Fully Overhauled Premium Game Styles */}
     <style>{`
-      .puzzle-container {
+      .rotate-board-component .puzzle-container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -336,14 +337,15 @@ const RotateBoard = ({
       }
 
       /* CRITICAL FIX: The anchor container that forces the overlay to cover only the board */
-      .board-wrapper {
+      .rotate-board-component .board-wrapper {
         position: relative;
         width: 100%;
         max-width: 450px;
         aspect-ratio: 1 / 1;
+        margin: 0 auto;
       }
 
-      .grid-board {
+      .rotate-board-component .grid-board {
         display: grid;
         gap: ${c.gap}px; 
         background-color: #d6d7f8; 
@@ -356,7 +358,7 @@ const RotateBoard = ({
         transition: all 0.3s ease;
       }
 
-      .grid-cell {
+      .rotate-board-component .grid-cell {
         position: relative;
         background-color: #ffffff;
         border-radius: 8px;
@@ -368,20 +370,35 @@ const RotateBoard = ({
         user-select: none;
       }
 
-      .grid-cell:not(.node-locked):active { transform: scale(0.95); }
-      .grid-cell:hover:not(.node-locked) { background-color: #f1f5f9; }
-      .grid-cell.node-locked { cursor: default; }
-      .line-segment { position: absolute; background-color: #4A4FE0; z-index: 1; pointer-events: none; }
+      .rotate-board-component .grid-cell:not(.node-locked):active { transform: scale(0.95); }
+      .rotate-board-component .grid-cell:hover:not(.node-locked) { background-color: #f1f5f9; }
+      .rotate-board-component .grid-cell.node-locked { cursor: default; }
+      .rotate-board-component .line-segment { position: absolute; background-color: #4A4FE0; z-index: 1; pointer-events: none; }
+
+      .App.theme-dark .grid-board {
+        background-color: var(--paper-dim);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      }
+
+      .App.theme-dark .grid-cell {
+        background-color: var(--paper);
+        border: 1px solid var(--line);
+        color: var(--ink);
+      }
+
+      .App.theme-dark .grid-cell:hover:not(.node-locked) { background-color: var(--paper-dim); }
+      .App.theme-dark .grid-cell.node-locked { background-color: var(--paper-dim); }
+      .App.theme-dark .number-badge { background-color: var(--ink); color: var(--paper); border-color: var(--paper-dim); }
 
       /* Track sizing logic calculations */
-      .span-vertical { top: 0; bottom: 0; left: calc(50% - ${c.line / 2}px); width: ${c.line}px; }
-      .span-horizontal { left: 0; right: 0; top: calc(50% - ${c.line / 2}px); height: ${c.line}px; }
-      .span-half-top { top: 0; height: 50%; left: calc(50% - ${c.line / 2}px); width: ${c.line}px; }
-      .span-half-bottom { top: 50%; height: 50%; left: calc(50% - ${c.line / 2}px); width: ${c.line}px; }
-      .span-half-left { left: 0; width: 50%; top: calc(50% - ${c.line / 2}px); height: ${c.line}px; }
-      .span-half-right { left: 50%; width: 50%; top: calc(50% - ${c.line / 2}px); height: ${c.line}px; }
+      .rotate-board-component .span-vertical { top: 0; bottom: 0; left: calc(50% - ${c.line / 2}px); width: ${c.line}px; }
+      .rotate-board-component .span-horizontal { left: 0; right: 0; top: calc(50% - ${c.line / 2}px); height: ${c.line}px; }
+      .rotate-board-component .span-half-top { top: 0; height: 50%; left: calc(50% - ${c.line / 2}px); width: ${c.line}px; }
+      .rotate-board-component .span-half-bottom { top: 50%; height: 50%; left: calc(50% - ${c.line / 2}px); width: ${c.line}px; }
+      .rotate-board-component .span-half-left { left: 0; width: 50%; top: calc(50% - ${c.line / 2}px); height: ${c.line}px; }
+      .rotate-board-component .span-half-right { left: 50%; width: 50%; top: calc(50% - ${c.line / 2}px); height: ${c.line}px; }
 
-      .number-badge {
+      .rotate-board-component .number-badge {
         position: relative;
         z-index: 2;
         width: ${c.badge}px;
@@ -403,7 +420,7 @@ const RotateBoard = ({
          ============================================================================ */
       
       /* Neon line glow animation when board is solved */
-      .board-victory-glow .line-segment {
+      .rotate-board-component .board-victory-glow .line-segment {
         animation: trackNeonPulse 1.2s infinite alternate ease-in-out;
         filter: drop-shadow(0 0 8px #00bda5) drop-shadow(0 0 16px rgba(0, 189, 165, 0.8));
       }
@@ -414,7 +431,7 @@ const RotateBoard = ({
       }
 
       /* Glassmorphism blur overlay locked strictly on top of the board frame */
-      .victory-overlay {
+      .rotate-board-component .victory-overlay {
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(30, 21, 42, 0.45); /* Soft deep plum overlay tint */
@@ -429,7 +446,7 @@ const RotateBoard = ({
       }
 
       /* Spring animated modal card box */
-      .victory-card {
+      .rotate-board-component .victory-card {
         background: #ffffff;
         padding: 32px 24px;
         border-radius: 24px;
@@ -442,7 +459,7 @@ const RotateBoard = ({
         z-index: 60;
       }
 
-      .victory-card h2 {
+      .rotate-board-component .victory-card h2 {
         margin: 0 0 6px 0;
         font-size: 22px;
         font-weight: 800;
@@ -450,7 +467,7 @@ const RotateBoard = ({
         letter-spacing: 0.02em;
       }
 
-      .victory-card p {
+      .rotate-board-component .victory-card p {
         margin: 0 0 24px 0;
         font-size: 13px;
         color: #64748b;
@@ -459,22 +476,22 @@ const RotateBoard = ({
       }
 
         /* Try Again Text Accents Override Style */
-        .victory-card h2.timeout-title {
+        .rotate-board-component .victory-card h2.timeout-title {
           color: #ff5252;
         }
 
         /* Try Again Selection Button Accent Overrides Style */
-        .next-level-btn.timeout-btn {
+        .rotate-board-component .next-level-btn.timeout-btn {
           background-color: #ff5252;
           box-shadow: 0 4px 12px rgba(255, 82, 82, 0.25);
         }
-        .next-level-btn.timeout-btn:hover {
+        .rotate-board-component .next-level-btn.timeout-btn:hover {
           background-color: #e04343;
           box-shadow: 0 6px 16px rgba(255, 82, 82, 0.35);
         }
 
       /* --- OVERHAULED METRIC CONTAINER BLOCKS --- */
-      .victory-stats-container {
+      .rotate-board-component .victory-stats-container {
         width: 100%;
         background-color: #f8fafc; /* Ultra-soft off-white slate background tint */
         border: 1px solid #e2e8f0;
@@ -488,7 +505,7 @@ const RotateBoard = ({
       }
 
       /* Row 1 Layout Configuration */
-      .stats-row.split-row {
+      .rotate-board-component .stats-row.split-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -496,7 +513,7 @@ const RotateBoard = ({
         padding-bottom: 10px;
       }
 
-      .stat-box {
+      .rotate-board-component .stat-box {
         display: flex;
         flex-direction: column;
       }
@@ -504,7 +521,7 @@ const RotateBoard = ({
       .stat-box.align-left { text-align: left; }
       .stat-box.align-right { text-align: right; }
 
-      .stat-label {
+      .rotate-board-component .stat-label {
         font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 0.06em;
@@ -513,32 +530,32 @@ const RotateBoard = ({
         margin-bottom: 2px;
       }
 
-      .stat-box strong {
+      .rotate-board-component .stat-box strong {
         color: #0f172a;
         font-size: 15px;
         font-weight: 700;
       }
 
       /* Emerald highlighted green theme code for extra point notifications */
-      .stat-box strong.points-plus {
+      .rotate-board-component .stat-box strong.points-plus {
         color: #00bda5;
       }
 
       /* Row 2 Layout Configuration */
-      .stats-row.center-row {
+      .rotate-board-component .stats-row.center-row {
         display: flex;
         justify-content: center;
         align-items: center;
         padding-top: 2px;
       }
 
-      .stat-total {
+      .rotate-board-component .stat-total {
         font-size: 13px;
         color: #475569;
         font-weight: 600;
       }
 
-      .stat-total strong {
+      .rotate-board-component .stat-total strong {
         font-size: 16px;
         font-weight: 800;
         color: #1e152a; /* Deep bold midnight accent color */
@@ -546,7 +563,7 @@ const RotateBoard = ({
       }
 
       /* Clean, heavily styled custom tactical call-to-action button */
-      .next-level-btn {
+      .rotate-board-component .next-level-btn {
         background: #1e152a; /* Deep midnight plum provides perfect heavy contrast */
         color: #ffffff;
         border: none;
@@ -560,13 +577,13 @@ const RotateBoard = ({
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
-      .next-level-btn:hover {
+      .rotate-board-component .next-level-btn:hover {
         background: #4A4FE0;
         box-shadow: 0 6px 20px rgba(74, 79, 224, 0.4);
         transform: translateY(-1px);
       }
 
-      .next-level-btn:active {
+      .rotate-board-component .next-level-btn:active {
         transform: translateY(1px) scale(0.98);
       }
 
@@ -576,23 +593,23 @@ const RotateBoard = ({
       @keyframes iconSpinBounce { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(8deg); } }
 
       /* --- CASCADE FLOATING PARTICLE SYSTEM --- */
-      .confetti-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; }
-      .confetti { position: absolute; width: 6px; height: 10px; border-radius: 2px; opacity: 0.85; top: -15px; animation: particleRain 2.4s infinite linear; }
+      .rotate-board-component .confetti-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; }
+      .rotate-board-component .confetti { position: absolute; width: 6px; height: 10px; border-radius: 2px; opacity: 0.85; top: -15px; animation: particleRain 2.4s infinite linear; }
 
-      .confetti.p-0  { left: 8%;  background: #00bda5; animation-delay: 0.1s; animation-duration: 2.0s; }
-      .confetti.p-1  { left: 22%; background: #ff4a5a; animation-delay: 0.6s; animation-duration: 2.5s; }
-      .confetti.p-2  { left: 36%; background: #ffca28; animation-delay: 0.2s; animation-duration: 2.2s; }
-      .confetti.p-3  { left: 50%; background: #9c27b0; animation-delay: 0.9s; animation-duration: 2.8s; }
-      .confetti.p-4  { left: 64%; background: #00bda5; animation-delay: 0.4s; animation-duration: 1.9s; }
-      .confetti.p-5  { left: 78%; background: #ff4a5a; animation-delay: 0.8s; animation-duration: 2.4s; }
-      .confetti.p-6  { left: 92%; background: #ffca28; animation-delay: 1.2s; animation-duration: 2.6s; }
-      .confetti.p-7  { left: 15%; background: #9c27b0; animation-delay: 0.3s; animation-duration: 2.1s; }
-      .confetti.p-8  { left: 29%; background: #00bda5; animation-delay: 1.4s; animation-duration: 2.9s; }
-      .confetti.p-9  { left: 43%; background: #ff4a5a; animation-delay: 0.5s; animation-duration: 2.3s; }
-      .confetti.p-10 { left: 58%; background: #ffca28; animation-delay: 1.0s; animation-duration: 2.4s; }
-      .confetti.p-11 { left: 72%; background: #9c27b0; animation-delay: 0.7s; animation-duration: 2.7s; }
-      .confetti.p-12 { left: 85%; background: #00bda5; animation-delay: 1.6s; animation-duration: 2.8s; }
-      .confetti.p-13 { left: 95%; background: #ff4a5a; animation-delay: 0.2s; animation-duration: 2.2s; }
+      .rotate-board-component .confetti.p-0  { left: 8%;  background: #00bda5; animation-delay: 0.1s; animation-duration: 2.0s; }
+      .rotate-board-component .confetti.p-1  { left: 22%; background: #ff4a5a; animation-delay: 0.6s; animation-duration: 2.5s; }
+      .rotate-board-component .confetti.p-2  { left: 36%; background: #ffca28; animation-delay: 0.2s; animation-duration: 2.2s; }
+      .rotate-board-component .confetti.p-3  { left: 50%; background: #9c27b0; animation-delay: 0.9s; animation-duration: 2.8s; }
+      .rotate-board-component .confetti.p-4  { left: 64%; background: #00bda5; animation-delay: 0.4s; animation-duration: 1.9s; }
+      .rotate-board-component .confetti.p-5  { left: 78%; background: #ff4a5a; animation-delay: 0.8s; animation-duration: 2.4s; }
+      .rotate-board-component .confetti.p-6  { left: 92%; background: #ffca28; animation-delay: 1.2s; animation-duration: 2.6s; }
+      .rotate-board-component .confetti.p-7  { left: 15%; background: #9c27b0; animation-delay: 0.3s; animation-duration: 2.1s; }
+      .rotate-board-component .confetti.p-8  { left: 29%; background: #00bda5; animation-delay: 1.4s; animation-duration: 2.9s; }
+      .rotate-board-component .confetti.p-9  { left: 43%; background: #ff4a5a; animation-delay: 0.5s; animation-duration: 2.3s; }
+      .rotate-board-component .confetti.p-10 { left: 58%; background: #ffca28; animation-delay: 1.0s; animation-duration: 2.4s; }
+      .rotate-board-component .confetti.p-11 { left: 72%; background: #9c27b0; animation-delay: 0.7s; animation-duration: 2.7s; }
+      .rotate-board-component .confetti.p-12 { left: 85%; background: #00bda5; animation-delay: 1.6s; animation-duration: 2.8s; }
+      .rotate-board-component .confetti.p-13 { left: 95%; background: #ff4a5a; animation-delay: 0.2s; animation-duration: 2.2s; }
 
       @keyframes particleRain {
         0% { top: -15px; transform: translateX(0) rotate(0deg); }
@@ -601,19 +618,20 @@ const RotateBoard = ({
       }
 
       @media (max-width: 480px) {
-        .span-vertical, .span-half-top, .span-half-bottom { width: ${c.mLine}px; left: calc(50% - ${c.mLine / 2}px); }
-        .span-horizontal, .span-half-left, .span-half-right { height: ${c.mLine}px; top: calc(50% - ${c.mLine / 2}px); }
-        .number-badge { width: ${c.mBadge}px; height: ${c.mBadge}px; font-size: ${c.mFont}px; border-width: 1.5px; }
-        .grid-board { gap: ${c.mGap}px; padding: 8px; border-radius: 16px; }
-        .puzzle-container {
+        .rotate-board-component .span-vertical, .rotate-board-component .span-half-top, .rotate-board-component .span-half-bottom { width: ${c.mLine}px; left: calc(50% - ${c.mLine / 2}px); }
+        .rotate-board-component .span-horizontal, .rotate-board-component .span-half-left, .rotate-board-component .span-half-right { height: ${c.mLine}px; top: calc(50% - ${c.mLine / 2}px); }
+        .rotate-board-component .number-badge { width: ${c.mBadge}px; height: ${c.mBadge}px; font-size: ${c.mFont}px; border-width: 1.5px; }
+        .rotate-board-component .grid-board { gap: ${c.mGap}px; padding: 8px; border-radius: 16px; }
+        .rotate-board-component .puzzle-container {
     /* FIX: Strip all padding on mobile so the board uses 100% of the card width */
     padding: 0; 
   }
 
-  .board-wrapper {
+  .rotate-board-component .board-wrapper {
     /* FIX: Safeguard the board from being crushed by any parent flex box elements */
     flex-shrink: 0; 
     width: 100%;
+    margin: 0 auto;
   }
       }
     `}</style>

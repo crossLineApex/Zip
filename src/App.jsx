@@ -14,6 +14,7 @@ function App() {
   const [view, setView] = useState('daily');
   const [selectedPuzzle, setSelectedPuzzle] = useState('');
   const [selectedMode, setSelectedMode] = useState('sandbox');
+  const [darkMode, setDarkMode] = useState(false);
 
   const handlePuzzleSelect = (puzzle) => {
     setSelectedPuzzle(puzzle);
@@ -31,9 +32,15 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className={`App ${darkMode ? 'theme-dark' : ''}`}>
       <div className="bg-fade"></div>
-      <Header onPuzzleSelect={handlePuzzleSelect} selectedPuzzle={selectedPuzzle} onBrandClick={resetToDaily} />
+      <Header
+        onPuzzleSelect={handlePuzzleSelect}
+        selectedPuzzle={selectedPuzzle}
+        onBrandClick={resetToDaily}
+        darkMode={darkMode}
+        onToggleTheme={() => setDarkMode((prev) => !prev)}
+      />
 
       <main id="top">
         <section className="hero">
@@ -175,13 +182,13 @@ function App() {
                       <path d="M27.5,27.5 L97.5,27.5 L97.5,62.5 L27.5,62.5 L27.5,97.5 L97.5,97.5" 
                             stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
 
-                      <circle cx="27.5" cy="27.5" r="9" fill="var(--zipa)"></circle>
+                      <circle cx="27.5" cy="27.5" r="9" fill="#000"></circle>
                       <text x="27.5" y="31" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">1</text>
 
-                      <circle cx="62.5" cy="62.5" r="9" fill="var(--zipa)"></circle>
+                      <circle cx="62.5" cy="62.5" r="9" fill="#000"></circle>
                       <text x="62.5" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">2</text>
 
-                      <circle cx="97.5" cy="97.5" r="9" fill="var(--zipa)"></circle>
+                      <circle cx="97.5" cy="97.5" r="9" fill="#000"></circle>
                       <text x="97.5" y="101" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">3</text>
                     </svg>
 
