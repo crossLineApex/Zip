@@ -54,7 +54,7 @@ const ZipFlipAscent = () => {
 
   const puzzle = useMemo(() => {
     const { gridConfig, maxNum, start } = generateZipGridConfig(gridSize, difficulty);
-    const scrambledGrid = ScrambledGridConfig(gridConfig, 0.8);
+    const scrambledGrid = ScrambledGridConfig(gridConfig, 0.9);
     return { scrambledGrid, maxNum, start };
   }, [gridSize, difficulty, level]);
 

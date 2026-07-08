@@ -42,7 +42,7 @@ body {
 .App.theme-dark {
   --paper:#11161d;
   --paper-dim:#1b2230;
-  --ink:#f5f7fb;
+  --ink:#D9D6D1;
   --ink-soft:#c7d0de;
   --ink-faint:#94a1b3;
   --line:#2f394b;
@@ -66,21 +66,27 @@ body {
 .App.theme-dark .puzzle-card,
 .App.theme-dark .mode-card,
 .App.theme-dark .step-card,
-.App.theme-dark .mode-selection-card,
-/* .App.theme-dark .selection-status-card, */
-.App.theme-dark .faq-item {
+.App.theme-dark .mode-selection-card
+{
   background-color: var(--paper-dim);
   color: var(--ink);
 }
 
-.App.theme-dark .chip-btn,
 .App.theme-dark .mode-choice-btn,
 .App.theme-dark .play-btn,
-.App.theme-dark .faq-q,
 .App.theme-dark .step-board,
 .App.theme-dark .pc-board {
   background-color: var(--paper-dim);
   color: var(--ink);
+}
+
+.App.theme-dark .mode-choice-btn.active{
+  background-color: #1E2122;
+  color: #558AE2
+}
+
+.App.theme-dark .chip-btn{
+  background: var(--paper-dim);
 }
 
 .App.theme-dark .play-btn {

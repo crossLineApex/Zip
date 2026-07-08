@@ -194,6 +194,17 @@ const ZipDotSandbox = () => {
           color: var(--ink);
         }
 
+        .App.theme-dark .control-btn {
+          background-color: var(--paper);
+          color: var(--ink-soft);
+          border: 2px solid #2e3e50
+        }
+
+        .App.theme-dark .control-btn.active {
+          background-color: #00BDA5;
+          color: var(--ink-soft);
+        }
+
         .controls-container {
           width: 100%;
           max-width: 450px; /* Locks proportions perfectly below the board frame */

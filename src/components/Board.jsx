@@ -429,7 +429,7 @@ const Board = ({
         .App.theme-dark .board-component .grid-cell.clicked { background-color: var(--zipa-soft); }
         .App.theme-dark .board-component .grid-cell.dot { background-color: var(--paper-dim); border: none }
         .App.theme-dark .board-component .indicator-dot.d { background-color: rgba(148, 161, 179, 0.3); border-color: var(--ink-faint); }
-        .App.theme-dark .board-component .number-badge { background-color: var(--ink); color: var(--paper); border-color: var(--paper-dim); }
+        .App.theme-dark .board-component .number-badge { background-color: black; color: #D9D6D1; border-color: var(--paper-dim); }
         .App.theme-dark .board-component .bar-cell { background-color: var(--paper-dim); border-color: var(--line); color: var(--ink-soft); }
         .App.theme-dark .board-component .bar-cell:hover { background-color: var(--paper); color: var(--ink); }
         .App.theme-dark .board-component .bar-cell.selected { background-color: var(--zipa); color: var(--paper); }
