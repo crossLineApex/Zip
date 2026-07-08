@@ -33,12 +33,12 @@ export const getDailyPuzzleParameters = () => {
 
   const difficulties = ["easy", "medium", "hard"];
 
-  // Zip Flip Configuration: Size bounds 5 to 12
-  const zipFlipSize = Math.floor(flipRng() * (12 - 5 + 1)) + 5;
+  // Zip Flip Configuration: Size bounds 5 to 10
+  const zipFlipSize = Math.floor(flipRng() * (10 - 5 + 1)) + 5;
   const zipFlipDiff = difficulties[Math.floor(flipRng() * difficulties.length)];
 
-  // Zip Dot Configuration: Size bounds 5 to 10
-  const zipDotSize = Math.floor(dotRng() * (10 - 5 + 1)) + 5;
+  // Zip Dot Configuration: Size bounds 5 to 8
+  const zipDotSize = Math.floor(dotRng() * (8 - 5 + 1)) + 5;
   const zipDotDiff = difficulties[Math.floor(dotRng() * difficulties.length)];
 
   return {

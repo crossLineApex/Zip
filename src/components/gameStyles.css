@@ -102,7 +102,7 @@
 .daily-puzzle-shell .control-heading {
   font-size: 15px;
   font-weight: 700;
-  color: #475569;
+  color: #B0AA9F;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 10px;
@@ -1086,9 +1086,17 @@
 }
 
 .App.theme-dark .rotate-board-component .number-badge {
-  background-color: var(--ink);
-  color: var(--paper);
+  background-color: black;
+  color: #D9D6D1;
   border-color: var(--paper-dim);
+}
+
+.App.theme-dark .dashboard-points {
+  color: var(--ink-soft);
+}
+
+.App.theme-dark .dashboard-points strong {
+  color: var(--ink);
 }
 
 .rotate-board-component .confetti-container {

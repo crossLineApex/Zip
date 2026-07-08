@@ -22,7 +22,7 @@ const DailyZipFlipPuzzle = () => {
     const { zipFlip } = getDailyPuzzleParameters();
 
     const { gridConfig, maxNum, start } = generateZipGridConfig(zipFlip.gridSize, zipFlip.difficulty, zipFlip.seed);
-    const scrambledGrid = scrambleGridConfig(gridConfig, 0.8, zipFlip.seed);
+    const scrambledGrid = scrambleGridConfig(gridConfig, 0.9, zipFlip.seed);
 
     return { scrambledGrid, maxNum, start, difficulty: zipFlip.difficulty, gridSize: zipFlip.gridSize };
     

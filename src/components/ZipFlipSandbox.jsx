@@ -18,7 +18,7 @@ const ZipFlipSandbox = () => {
 
   const puzzle = useMemo(() => {
     const { gridConfig, maxNum, start } = generateZipGridConfig(gridSize, difficulty);
-    const scrambledGrid = ScrambledGridConfig(gridConfig, 0.8);
+    const scrambledGrid = ScrambledGridConfig(gridConfig, 0.9);
     return { scrambledGrid, maxNum, start };
   }, [gridSize, difficulty, refreshKey]);
 
@@ -114,9 +114,9 @@ const ZipFlipSandbox = () => {
             ))}
           </div>
 
-          {/* Row 2 - Second Row of Options (9x9 to 12x12) */}
-          <div className="button-grid size-cols split-row">
-            {[9, 10, 11, 12].map((size) => (
+          {/* Row 2 - Second Row of Options (9x9 to 10x10) */}
+          <div className="button-grid size-cols split-row center-two">
+            {[9, 10].map((size) => (
               <button
                 key={size}
                 className={`control-btn ${gridSize === size ? "active" : ""}`}
@@ -212,6 +212,17 @@ const ZipFlipSandbox = () => {
           color: var(--ink);
         }
 
+        .App.theme-dark .control-btn {
+          background-color: var(--paper);
+          color: var(--ink-soft);
+          border: 2px solid #2e3e50
+        }
+
+        .App.theme-dark .control-btn.active {
+          background-color: #1A1E98;
+          color: var(--ink-soft);
+        }
+
         .controls-container {
           width: 100%;
           max-width: 450px; /* Locks proportions perfectly below the board frame */
@@ -248,6 +259,10 @@ const ZipFlipSandbox = () => {
 
         .size-cols {
           grid-template-columns: repeat(4, 1fr); /* 4 column setups */
+        }
+
+        .center-two > :first-child {
+          grid-column-start: 2;
         }
 
         .split-row {
