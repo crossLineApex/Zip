@@ -1,4 +1,4 @@
-const Header = ({ onPuzzleSelect, selectedPuzzle, onBrandClick }) => {
+const Header = ({ onPuzzleSelect, selectedPuzzle, onBrandClick, darkMode, onToggleTheme }) => {
   return (
     <header>
       <div className="header-inner">
@@ -16,6 +16,24 @@ const Header = ({ onPuzzleSelect, selectedPuzzle, onBrandClick }) => {
         </a>
 
         <div className="header-ctas">
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={onToggleTheme}
+            aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {darkMode ? (
+              <svg viewBox="0 0 24 24" className="theme-toggle-icon" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" fill="currentColor" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" className="theme-toggle-icon" aria-hidden="true">
+                <circle cx="12" cy="12" r="4.5" fill="currentColor" />
+                <path d="M12 2.5v2.2M12 19.3v2.2M4.7 4.7l1.6 1.6M17.7 17.7l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.7 19.3l1.6-1.6M17.7 6.3l1.6-1.6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            )}
+          </button>
           <button
             type="button"
             className={`chip-btn a ${selectedPuzzle === 'flip' ? 'active' : ''}`}

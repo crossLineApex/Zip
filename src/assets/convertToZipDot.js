@@ -12,7 +12,7 @@ const convertToZipDot = (standardGrid, maxNum) => {
 
   // 1. Process the existing rows first: insert a dot cell AT THE BEGINNING of each row
   const paddedRows = standardGrid.map((row) => [
-    { lines: [""], dot: true },         // 👈 Added at the beginning of the row
+    { lines: [""], dot: true },         // Added at the beginning of the row
     ...row.map((cell) => ({ ...cell })) // Followed by copies of the original cells
   ]);
 
@@ -77,7 +77,7 @@ const convertToZipDot = (standardGrid, maxNum) => {
   }
 
     // ============================================================================
-    // 1: INJECT NO-CLICK LOCKS ON EMPTY AXIS TRACKS
+    // INJECT NO-CLICK LOCKS ON EMPTY AXIS TRACKS
     // Uses initialDots keys as a lightning-fast lookup map instead of loops
     // ============================================================================
     const gridWithLocks = dotGrid.map((row, r) =>
@@ -101,7 +101,7 @@ const convertToZipDot = (standardGrid, maxNum) => {
     );
 
   // ============================================================================
-  // 2. STRIP INTERMEDIATE NUMBERS FROM THE GRID LAYOUT
+  // STRIP INTERMEDIATE NUMBERS FROM THE GRID LAYOUT
   // ============================================================================
   const cleanedGrid = gridWithLocks.map((row, r) =>
     row.map((cell, c) => {

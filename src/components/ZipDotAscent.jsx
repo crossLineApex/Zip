@@ -138,7 +138,7 @@ const ZipDotAscent = () => {
           width: 100%;
           max-width: 450px;
           padding: 0 16px;
-          margin-top: 10px;
+          // margin-top: 10px;
           margin-bottom: 6px;
           box-sizing: border-box;
           font-family: system-ui, -apple-system, sans-serif;
@@ -147,7 +147,7 @@ const ZipDotAscent = () => {
 
         .dashboard-badge {
           font-weight: 700;
-          font-size: 15px;
+          font-size: 14px;
           text-transform: capitalize;
           transition: color 0.2s ease;
           white-space: nowrap;
@@ -189,6 +189,14 @@ const ZipDotAscent = () => {
         .dashboard-points strong {
           font-weight: 800;
           color: #0f172a;
+        }
+
+        .App.theme-dark .dashboard-points {
+          color: var(--ink-soft);
+        }
+
+        .App.theme-dark .dashboard-points strong {
+          color: var(--ink);
         }
 
         .controls-container {

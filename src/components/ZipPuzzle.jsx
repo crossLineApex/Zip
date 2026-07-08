@@ -160,7 +160,7 @@ const ZipPuzzle = () => {
 
         .dashboard-badge {
           font-weight: 700;
-          font-size: 15px;
+          font-size: 14px;
           text-transform: capitalize;
           transition: color 0.2s ease;
           white-space: nowrap;
