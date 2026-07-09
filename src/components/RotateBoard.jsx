@@ -227,7 +227,7 @@ const RotateBoard = ({
       {isWon && (
         <div className="victory-overlay">
           <div className="confetti-container">
-            {[...Array(14)].map((_, i) => (
+            {[...Array(9)].map((_, i) => (
               <div key={i} className={`confetti p-${i}`} />
             ))}
           </div>
@@ -395,7 +395,7 @@ const RotateBoard = ({
       .rotate-board-component .victory-overlay {
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(28, 20, 36, 0.25); 
+        background: rgba(28, 20, 36, 0.55); 
         display: flex;
         align-items: center;
         justify-content: center;
