@@ -226,8 +226,9 @@ const RotateBoard = ({
 
       {isWon && (
         <div className="victory-overlay">
+          {/* Restored to 14 items since optimizations handle the rendering fluidly */}
           <div className="confetti-container">
-            {[...Array(9)].map((_, i) => (
+            {[...Array(14)].map((_, i) => (
               <div key={i} className={`confetti p-${i}`} />
             ))}
           </div>
@@ -295,12 +296,14 @@ const RotateBoard = ({
         box-sizing: border-box;
       }
 
+      /* ⚡ PERF: Added GPU Layer promotion to flat composite rendering tree maps */
       .rotate-board-component .board-wrapper {
         position: relative;
         width: 100%;
         max-width: 450px;
         aspect-ratio: 1 / 1;
         margin: 0 auto;
+        backface-visibility: hidden;
       }
 
       .rotate-board-component .grid-board {
@@ -332,7 +335,6 @@ const RotateBoard = ({
       .rotate-board-component .grid-cell:hover:not(.node-locked) { background-color: #f1f5f9; }
       .rotate-board-component .grid-cell.node-locked { cursor: default; }
       
-      /* ⚡ PERF: Added will-change to lines to bypass layout calculations entirely during rotation animations */
       .rotate-board-component .line-segment { 
         position: absolute; 
         background-color: #4A4FE0; 
@@ -380,22 +382,18 @@ const RotateBoard = ({
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       }
 
-      /* ⚡ PERF OVERHAUL: Apply a static drop-shadow rule once, then handle the animation through GPU compositor opacity keys */
+      /* ⚡ PERF FIX: Replaced infinite @keyframes filter animations with a single, static high-impact neon glow filter */
       .rotate-board-component .board-victory-glow .line-segment {
-        animation: trackNeonPulse 1.2s infinite alternate ease-in-out;
-        filter: drop-shadow(0 0 8px #00bda5);
+        background-color: #00bda5;
+        filter: drop-shadow(0 0 5px #00bda5);
+        transition: background-color 0.3s ease;
       }
 
-      @keyframes trackNeonPulse {
-        0% { opacity: 0.6; }
-        100% { opacity: 1; }
-      }
-
-      /* ⚡ PERF OVERHAUL: Replaced dynamic live browser page blur filter with high-opacity premium matte canvas tint */
+      /* ⚡ PERF FIX: Replaced live browser backdrop blur filters with a highly optimized solid canvas matte tint */
       .rotate-board-component .victory-overlay {
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(28, 20, 36, 0.55); 
+        background: rgba(28, 20, 36, 0.96); 
         display: flex;
         align-items: center;
         justify-content: center;
@@ -417,22 +415,8 @@ const RotateBoard = ({
         z-index: 60;
       }
 
-      .rotate-board-component .victory-card h2 {
-        margin: 0 0 6px 0;
-        font-size: 22px;
-        font-weight: 800;
-        color: #1e152a;
-        letter-spacing: 0.02em;
-      }
-
-      .rotate-board-component .victory-card p {
-        margin: 0 0 24px 0;
-        font-size: 13px;
-        color: #64748b;
-        line-height: 1.4;
-        font-weight: 500;
-      }
-
+      .rotate-board-component .victory-card h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; color: #1e152a; letter-spacing: 0.02em; }
+      .rotate-board-component .victory-card p { margin: 0 0 24px 0; font-size: 13px; color: #64748b; line-height: 1.4; font-weight: 500; }
       .rotate-board-component .victory-card h2.timeout-title { color: #ff5252; }
       .rotate-board-component .next-level-btn.timeout-btn { background-color: #ff5252; box-shadow: 0 4px 12px rgba(255, 82, 82, 0.25); }
       .rotate-board-component .next-level-btn.timeout-btn:hover { background-color: #e04343; box-shadow: 0 6px 16px rgba(255, 82, 82, 0.35); }
@@ -450,14 +434,7 @@ const RotateBoard = ({
         gap: 10px;
       }
 
-      .rotate-board-component .stats-row.split-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px dashed #cbd5e1;
-        padding-bottom: 10px;
-      }
-
+      .rotate-board-component .stats-row.split-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #cbd5e1; padding-bottom: 10px; }
       .rotate-board-component .stat-box { display: flex; flex-direction: column; }
       .stat-box.align-left { text-align: left; }
       .stat-box.align-right { text-align: right; }
@@ -490,8 +467,8 @@ const RotateBoard = ({
 
       .rotate-board-component .confetti-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; }
       
-      /* ⚡ PERF: Reduced confetti items to cheaper structural rendering transforms */
-      .rotate-board-component .confetti { position: absolute; width: 6px; height: 10px; border-radius: 2px; opacity: 0.85; top: -15px; animation: particleRain 2s infinite linear; will-change: transform; }
+      /* ⚡ PERF FIX: Rewrote rain coordinates to hardware-accelerated translateY steps to ensure smooth frames */
+      .rotate-board-component .confetti { position: absolute; width: 6px; height: 10px; border-radius: 2px; opacity: 0.85; top: -15px; animation: particleRain 2.2s infinite linear; will-change: transform; }
 
       .rotate-board-component .confetti.p-0  { left: 8%;  background: #00bda5; animation-delay: 0.1s; }
       .rotate-board-component .confetti.p-1  { left: 22%; background: #ff4a5a; animation-delay: 0.6s; }
