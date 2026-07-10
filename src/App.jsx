@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Header from './layouts/Header.jsx';
 import SectionHeading from './layouts/SectionHeading.jsx';
@@ -30,6 +30,15 @@ function App() {
     setSelectedPuzzle('');
     setSelectedMode('');
   };
+
+  useEffect(() => {
+  if (selectedPuzzle) {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+}, [selectedPuzzle]);
 
   return (
     <div className={`App ${darkMode ? 'theme-dark' : ''}`}>
