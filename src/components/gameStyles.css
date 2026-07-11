@@ -1061,7 +1061,7 @@
 }
 
 .App.theme-dark .board-component .bar-cell.disabled {
-  background-color: rgba(148, 161, 179, 0.16);
+  background-color: slategray;
   border-color: var(--line);
   color: var(--ink-faint);
 }

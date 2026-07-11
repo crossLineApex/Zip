@@ -5,7 +5,7 @@ import {getDailyPuzzleParameters, generateZipDotConfig} from "../assets/dailyLev
 import convertToZipDot from "../assets/convertToZipDot.js";
 import './gameStyles.css';
 
-const DailyZipDotPuzzle = () => {
+const DailyZipDotPuzzle = ({view, onPuzzleSelect}) => {
     const [difficulty, setDifficulty] = useState("easy"); // we will not use
     const [gridSize, setGridSize] = useState(5); // we will not use
     const [refreshKey, setRefreshKey] = useState(1);// might not use
@@ -74,6 +74,8 @@ const DailyZipDotPuzzle = () => {
             onStartGame={() => setIsTimerActive(true)}
             onWinGame={() => setIsTimerActive(false)}
             onNextLevel={() => setRefreshKey((prev) => prev + 1)}
+            view={view}
+            onPuzzleSelect = {onPuzzleSelect}
          />
       </div>
     </div>

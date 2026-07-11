@@ -1,6 +1,10 @@
+import { useEffect } from "react";
+
 const ModeSelectionPanel = ({ selectedPuzzle, selectedMode, onSelectMode }) => {
   const puzzleLabel = selectedPuzzle === 'dot' ? 'Zip Dot' : 'Zip Flip';
-
+  useEffect(() => {
+    onSelectMode('sandbox');
+  },[])
   return (
     <div className="mode-selection-panel">
       <div className="mode-selection-card">
