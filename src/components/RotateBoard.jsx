@@ -523,7 +523,7 @@ const RotateBoard = ({
       }
 
       .rotate-board-component .share-score-btn { background: #98a9a7; }
-      .rotate-board-component .share-score-btn:hover { background: #e0f9f6; }
+      .rotate-board-component .share-score-btn:hover { background: #9ca2a1; }
       .rotate-board-component .next-level-btn:hover { background: #5055e8; }
 
       @keyframes smoothFadeIn { from { opacity: 0; } to { opacity: 1; } }
