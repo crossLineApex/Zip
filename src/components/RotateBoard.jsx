@@ -184,7 +184,7 @@ const RotateBoard = ({
   }, [tracksState, gridConfig, start, maxNum, rowCount, colCount, onWinGame, isTimeOut, isWon]);
 
   const handleShareMetrics = async () => {
-    const formattedSummary = `⚡ Zip Flip Daily Puzzle solved in ${finalTime || "0:00"}!\nScore Earned: +${pointsEarned} pts\nCan you beat my track time?`;
+    const formattedSummary = `Zip Flip Daily Puzzle solved in ${finalTime || "0:00"}!\nScore Earned: +${pointsEarned} pts\nCan you beat my track time?`;
     const targetLink = "https://anytimezip.com";
 
     if (navigator.share) {
@@ -523,7 +523,7 @@ const RotateBoard = ({
       }
 
       .rotate-board-component .share-score-btn { background: #98a9a7; }
-      .rotate-board-component .share-score-btn:hover { background: #00a48f; }
+      .rotate-board-component .share-score-btn:hover { background: #e0f9f6; }
       .rotate-board-component .next-level-btn:hover { background: #5055e8; }
 
       @keyframes smoothFadeIn { from { opacity: 0; } to { opacity: 1; } }
