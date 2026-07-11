@@ -47,7 +47,7 @@ const PuzzleCard = ({ variant, label}) => {
           `}
         </style>
 
-        <g stroke="#fff" stroke-width="1">
+        <g stroke="#fff" strokeWidth="1">
           <line x1="20" y1="20" x2="182.5" y2="20" />
           <line x1="20" y1="74" x2="182.5" y2="74" />
           <line x1="20" y1="128" x2="182.5" y2="128" />
@@ -58,21 +58,21 @@ const PuzzleCard = ({ variant, label}) => {
           <line x1="182" y1="20" x2="182" y2="182" />
         </g>
 
-          <path d="M47,47 L74,47" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" fill="none"/>
-          <path class="rotator1" d="M75.5,47 L126.5,47" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M47,47 L74,47" stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" fill="none"/>
+          <path className="rotator1" d="M75.5,47 L126.5,47" stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" fill="none"/>
 
-          <path d="M128,47 L155,47 L155,101 L74,101" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M128,47 L155,47 L155,101 L74,101" stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
 
-          <path class="rotator2" d="M73,101 L47,101 L47,128" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path className="rotator2" d="M73,101 L47,101 L47,128" stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
 
-          <path d="M47,128 L47,155 L155,155" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M47,128 L47,155 L155,155" stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
 
           <circle cx="47" cy="47" r="9" fill="black"></circle>
-          <text x="47" y="51" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">1</text>
+          <text x="47" y="51" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">1</text>
           <circle cx="101" cy="101" r="9" fill="black"></circle>
-          <text x="101" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">2</text>
+          <text x="101" y="105" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">2</text>
           <circle cx="155" cy="155" r="9" fill="black"></circle>
-          <text x="155" y="159" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">3</text>
+          <text x="155" y="159" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">3</text>
       </svg>
     )}
       {isZipDot && (
@@ -117,7 +117,7 @@ const PuzzleCard = ({ variant, label}) => {
     `}
   </style>
 
-  <g stroke="#fff" stroke-width="1">
+  <g stroke="#fff" strokeWidth="1">
     <line x1="20" y1="20" x2="182.5" y2="20" />
     <line x1="20" y1="74" x2="182.5" y2="74" />
     <line x1="20" y1="128" x2="182.5" y2="128" />
@@ -130,38 +130,38 @@ const PuzzleCard = ({ variant, label}) => {
 
   {/* dots above row 1, one per column, sitting above the top grid line */}
   <circle cx="47" cy="10" r="3" fill="#ff5252" />
-  <circle class="mid-dot" cx="101" cy="10" r="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1" />
+  <circle className="mid-dot" cx="101" cy="10" r="3" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="1" />
   <circle cx="155" cy="10" r="3" fill="#ff5252" />
 
   {/* dots left of column 1, one per row, sitting outside the left grid line */}
   <circle cx="10" cy="47" r="3" fill="#ff5252" />
-  <circle class="mid-dot" cx="10" cy="101" r="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1" />
+  <circle className="mid-dot" cx="10" cy="101" r="3" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="1" />
   <circle cx="10" cy="155" r="3" fill="#ff5252" />
 
   <path
     d="M47,47 L128,47 L155,47 L155,101 L74,101 L47,101 L47,128 L47,155 L155,155"
     stroke="var(--zipb)"
-    stroke-width="4"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="4"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     fill="none"
   />
 
   <circle cx="47" cy="47" r="9" fill="black"></circle>
-  <text x="47" y="51" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">1</text>
+  <text x="47" y="51" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">1</text>
 
   <circle cx="155" cy="155" r="9" fill="black"></circle>
-  <text x="155" y="159" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">3</text>
+  <text x="155" y="159" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">3</text>
 
   {/* number 2 in the grid cell, revealed during the animation */}
-  <g class="cell2-group">
+  <g className="cell2-group">
     <circle cx="101" cy="101" r="9" fill="black" />
-    <text x="101" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">2</text>
+    <text x="101" y="105" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">2</text>
   </g>
 
   {/* number 2 in a square, below and outside the grid */}
-  <rect class="num2-square" x="90" y="195" width="20" height="20" rx="2" fill="#334155" />
-  <text x="100" y="209" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">2</text>
+  <rect className="num2-square" x="90" y="195" width="20" height="20" rx="2" fill="#334155" />
+  <text x="100" y="209" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">2</text>
 </svg>
 
       )}
@@ -181,10 +181,10 @@ const PuzzleCard = ({ variant, label}) => {
             <p>The dots above the grid are the column markers, and the dots to the left of the grid are the row markers telling how many numbered cells can be there</p>
             <svg>
                 <circle cx="47" cy="10" r="3" fill="#ff5252" />
-                <text x="140" y="13" text-anchor="middle" font-family="JetBrains Mono" font-size="16" fill="#5B5F66"> - numbers revealed already</text>
+                <text x="140" y="13" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="16" fill="#5B5F66"> - numbers revealed already</text>
 
-                <circle cx="47" cy="50" r="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1" />
-                <text x="122" y="53" text-anchor="middle" font-family="JetBrains Mono" font-size="16" fill="#5B5F66"> - numbers remaining</text>
+                <circle cx="47" cy="50" r="3" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="1" />
+                <text x="122" y="53" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="16" fill="#5B5F66"> - numbers remaining</text>
             </svg>
             </>
           )}

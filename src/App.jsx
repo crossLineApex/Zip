@@ -63,7 +63,7 @@ function App() {
             </p>
 
             {view === 'daily' ? (
-              <DailyPuzzleGrid />
+              <DailyPuzzleGrid view={view} onPuzzleSelect={handlePuzzleSelect}/>
             ) : (
               <div className="selection-view">
                 <ModeSelectionPanel
@@ -109,9 +109,9 @@ function App() {
           </div>
         </section>
 
-        <div class="divider">
+        <div className="divider">
           <svg viewBox="0 0 1120 34" preserveAspectRatio="none">
-            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" strokeWidth="2"/>
             <circle cx="0" cy="17" r="3.5" fill="var(--zipb)"/>
             <circle cx="1120" cy="17" r="3.5" fill="var(--zipa)"/>
           </svg>
@@ -156,9 +156,9 @@ function App() {
           </div>
         </section>
 
-        <div class="divider">
+        <div className="divider">
           <svg viewBox="0 0 1120 34" preserveAspectRatio="none">
-            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" strokeWidth="2"/>
             <circle cx="0" cy="17" r="3.5" fill="var(--zipb)"/>
             <circle cx="1120" cy="17" r="3.5" fill="var(--zipa)"/>
           </svg>
@@ -171,12 +171,12 @@ function App() {
               title="Four Rules, one path"
               description="Both Zip Flip and Zip Dot follow the same core rules — only the grid layouts differ."
             />
-            <div class="steps">
-                <div class="step-card">
-                  <span class="step-num">01</span>
-                  <div class="step-board">
+            <div className="steps">
+                <div className="step-card">
+                  <span className="step-num">01</span>
+                  <div className="step-board">
                     <svg viewBox="0 0 125 125" xmlns="http://www.w3.org/2000/svg">
-                      <g stroke="#fff" stroke-width="1">
+                      <g stroke="#fff" strokeWidth="1">
                         <line x1="10" y1="10" x2="115" y2="10"></line>
                         <line x1="10" y1="45" x2="115" y2="45"></line>
                         <line x1="10" y1="80" x2="115" y2="80"></line>
@@ -189,16 +189,16 @@ function App() {
                       </g>
 
                       <path d="M27.5,27.5 L97.5,27.5 L97.5,62.5 L27.5,62.5 L27.5,97.5 L97.5,97.5" 
-                            stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                            stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none"></path>
 
                       <circle cx="27.5" cy="27.5" r="9" fill="#000"></circle>
-                      <text x="27.5" y="31" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">1</text>
+                      <text x="27.5" y="31" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">1</text>
 
                       <circle cx="62.5" cy="62.5" r="9" fill="#000"></circle>
-                      <text x="62.5" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">2</text>
+                      <text x="62.5" y="66" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">2</text>
 
                       <circle cx="97.5" cy="97.5" r="9" fill="#000"></circle>
-                      <text x="97.5" y="101" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fff">3</text>
+                      <text x="97.5" y="101" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="9" fill="#fff">3</text>
                     </svg>
 
                   </div>
@@ -206,35 +206,35 @@ function App() {
                   <p>Only one line from starting from 1 → 2 → 3, and so on, in numerical order, passing through each cell.</p>
                 </div>
 
-                <div class="step-card">
-                  <span class="step-num">02</span>
-                  <div class="step-board">
+                <div className="step-card">
+                  <span className="step-num">02</span>
+                  <div className="step-board">
                     <svg viewBox="0 0 120 120">
-                      <g stroke="#fff" stroke-width="1">
+                      <g stroke="#fff" strokeWidth="1">
                         <line x1="10" y1="10" x2="110" y2="10"/><line x1="10" y1="45" x2="110" y2="45"/>
                         <line x1="10" y1="80" x2="110" y2="80"/><line x1="10" y1="115" x2="110" y2="115"/>
                         <line x1="10" y1="10" x2="10" y2="115"/><line x1="45" y1="10" x2="45" y2="115"/>
                         <line x1="80" y1="10" x2="80" y2="115"/><line x1="110" y1="10" x2="110" y2="115"/>
                       </g>
-                      <path d="M27.5,27.5 L62.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L27.5,62.5 L27.5,97.5 L62.5,97.5 L97.5,97.5" fill="none" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M27.5,27.5 L62.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L27.5,62.5 L27.5,97.5 L62.5,97.5 L97.5,97.5" fill="none" stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                   <h4>Fill every cell</h4>
                   <p>The path must pass through every square on the grid — no cell left empty.</p>
                 </div>
 
-                <div class="step-card">
-                  <span class="step-num">03</span>
-                  <div class="step-board">
+                <div className="step-card">
+                  <span className="step-num">03</span>
+                  <div className="step-board">
                     <svg viewBox="0 0 120 120">
-                      <g stroke="#fff" stroke-width="1">
+                      <g stroke="#fff" strokeWidth="1">
                         <line x1="10" y1="10" x2="110" y2="10"/><line x1="10" y1="45" x2="110" y2="45"/>
                         <line x1="10" y1="80" x2="110" y2="80"/><line x1="10" y1="115" x2="110" y2="115"/>
                         <line x1="10" y1="10" x2="10" y2="115"/><line x1="45" y1="10" x2="45" y2="115"/>
                         <line x1="80" y1="10" x2="80" y2="115"/><line x1="110" y1="10" x2="110" y2="115"/>
                       </g>
-                      <path d="M27.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L62.5,97.5" fill="none" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M62.5,97.5 L62.5,27.5" fill="none" stroke="#D64545" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 6"/>
+                      <path d="M27.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L62.5,97.5" fill="none" stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M62.5,97.5 L62.5,27.5" fill="none" stroke="#D64545" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 6"/>
                       <circle cx="62.5" cy="62.5" r="6" fill="#D64545"/>
                     </svg>
                   </div>
@@ -242,18 +242,18 @@ function App() {
                   <p>The line moves only up, down, left or right — and can't touch a cell it's already used.</p>
                 </div>
 
-                <div class="step-card">
-                  <span class="step-num">04</span>
-                  <div class="step-board">
+                <div className="step-card">
+                  <span className="step-num">04</span>
+                  <div className="step-board">
                     <svg viewBox="0 0 120 120">
                       <rect x="10" y="10" width="100" height="100" rx="6" fill="var(--zipa-soft)"/>
-                      <g stroke="#fff" stroke-width="1">
+                      <g stroke="#fff" strokeWidth="1">
                         <line x1="10" y1="10" x2="110" y2="10"/><line x1="10" y1="45" x2="110" y2="45"/>
                         <line x1="10" y1="80" x2="110" y2="80"/><line x1="10" y1="115" x2="110" y2="115"/>
                         <line x1="10" y1="10" x2="10" y2="115"/><line x1="45" y1="10" x2="45" y2="115"/>
                         <line x1="80" y1="10" x2="80" y2="115"/><line x1="110" y1="10" x2="110" y2="115"/>
                       </g>
-                      <path d="M27.5,27.5 L62.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L27.5,62.5 L27.5,97.5 L62.5,97.5 L97.5,97.5" fill="none" stroke="var(--zipa)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M27.5,27.5 L62.5,27.5 L97.5,27.5 L97.5,62.5 L62.5,62.5 L27.5,62.5 L27.5,97.5 L62.5,97.5 L97.5,97.5" fill="none" stroke="var(--zipa)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
                       <circle cx="27.5" cy="27.5" r="6" fill="var(--zipa)"/>
                       <circle cx="97.5" cy="97.5" r="6" fill="var(--zipa)"/>
                     </svg>
@@ -265,9 +265,9 @@ function App() {
           </div>
         </section>
 
-        <div class="divider">
+        <div className="divider">
           <svg viewBox="0 0 1120 34" preserveAspectRatio="none">
-            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" stroke-width="2"/>
+            <path d="M0,17 L750,17 L780,30 L810,4 L840,17 L1120,17" fill="none" stroke="var(--line)" strokeWidth="2"/>
             <circle cx="0" cy="17" r="3.5" fill="var(--zipb)"/>
             <circle cx="1120" cy="17" r="3.5" fill="var(--zipa)"/>
           </svg>
