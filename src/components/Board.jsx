@@ -23,6 +23,7 @@ const Board = ({
   const [selected_number, setSelected_number] = useState(null);
   const [errorCell, setErrorCell] = useState(null);
   const [isWon, setIsWon] = useState(false);
+  const [shareText, setShareText] = useState("Share Score 🔗");
 
   const rowCount = gridConfig.length;
   const placedNumbers = Object.values(clickedCells);
@@ -44,7 +45,7 @@ const Board = ({
 
   // Three-stage step victory verification
   useEffect(() => {
-    // ⚡ PERF FIX: Short-circuit loop immediately if game is already won or timed out
+    // ⚡ PERF FIX: Instantly kill validation loop execution if already won or timed out
     if (numberBarChoices.length === 0 || isTimeOut || isWon) return;
 
     const allNumbersPlaced = Object.keys(clickedCells).length === numberBarChoices.length;
@@ -86,7 +87,36 @@ const Board = ({
     setClickedCells({});
     setSelected_number(null);
     setIsWon(false);
+    setShareText("Share Score 🔗"); // Clear out older sharing tracking configurations on levels reset
   }, [gridConfig, initialDots]);
+
+  // ============================================================================
+  // NATIVE WEB SHARE SHEET AND CLIPBOARD FALLBACK ROUTINES
+  // ============================================================================
+  const handleShareMetrics = async () => {
+    const formattedSummary = `I solved Zip Dot Daily Puzzle in ${finalTime || "0:00"}!\nScore Earned: +${pointsEarned} pts\nCan you beat my track time?`;
+    const targetLink = "https://anytimezip.com";
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "AnytimeZip Daily Score",
+          text: formattedSummary,
+          url: targetLink,
+        });
+      } catch (err) {
+        console.warn("Share sheet dismissed:", err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(`${formattedSummary}\nPlay here: ${targetLink}`);
+        setShareText("Copied! 📋");
+        setTimeout(() => setShareText("Share Score 🔗"), 2000);
+      } catch (err) {
+        console.error("Clipboard copy failure:", err);
+      }
+    }
+  };
 
   const toggleCell = (rowIndex, colIndex) => {
     if (isTimeOut || isWon) return;
@@ -196,7 +226,8 @@ const Board = ({
   return (
     <div className="game-layout board-component">
       <div className="puzzle-container">
-        <div className={`grid-board ${isWon ? "board-victory-glow" : ""}`}>
+        {/* ⚡ OPTIMIZATION: Strips structural overdraw paint calculations off layout when overlay mounts */}
+        <div className={`grid-board ${isWon ? "board-victory-glow cull-on-win" : ""} ${isTimeOut ? "cull-on-win" : ""}`}>
           {gridConfig.map((row, rowIndex) =>
             row.map((cell, colIndex) => {
               const cellKey = `${rowIndex}-${colIndex}`;
@@ -274,14 +305,23 @@ const Board = ({
                   </div>
                 )}
                 {view && view === 'daily' ? (
-                  <button 
-                    className="next-level-btn"
-                    onClick={() => {
-                      setIsWon(false);
-                      if (onPuzzleSelect) onPuzzleSelect('dot');
-                    }}>
-                    Play more
-                  </button>
+                  <div className="daily-overlay-actions">
+                    <button 
+                      className="next-level-btn share-score-btn"
+                      onClick={handleShareMetrics}
+                    >
+                      {shareText}
+                    </button>
+                    <button 
+                      className="next-level-btn secondary-play-btn"
+                      onClick={() => {
+                        setIsWon(false);
+                        if (onPuzzleSelect) onPuzzleSelect('dot');
+                      }}
+                    >
+                      Play More
+                    </button>
+                  </div>
                 ) : (
                   <button 
                     className="next-level-btn"
@@ -296,7 +336,7 @@ const Board = ({
             </div>
           )}
 
-          {/* NEW: TRY AGAIN TIME-OUT OVERLAY CONTAINER */}
+          {/* TRY AGAIN TIME-OUT OVERLAY CONTAINER */}
           {isTimeOut && (
             <div className="victory-overlay timeout-theme">
               <div className="victory-card">
@@ -375,7 +415,7 @@ const Board = ({
 
         .board-component .puzzle-container { display: flex; justify-content: center; align-items: center; font-family: system-ui, -apple-system, sans-serif; }
         
-        /* ⚡ PERF FIX: Promoted board box layer explicitly to GPU layer texture caches */
+        /* ⚡ OPTIMIZATION: Promotes board boundaries to hardware texture caches */
         .board-component .grid-board {
           display: grid; 
           grid-template-columns: repeat(${rowCount}, 1fr); 
@@ -384,7 +424,7 @@ const Board = ({
           background-color: #ccf1ed; 
           padding: 12px; 
           border-radius: 24px;
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); 
+          box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03); 
           width: 100%; 
           max-width: 450px; 
           aspect-ratio: 1 / 1; 
@@ -392,19 +432,24 @@ const Board = ({
           position: relative;
           transform: translateZ(0);
           backface-visibility: hidden;
+          transition: transform 0.2s ease;
+        }
+
+        /* ⚡ OPTIMIZATION: Strips down hidden cell counts out of active mobile recalculation passes */
+        .board-component .cull-on-win .grid-cell {
+          visibility: hidden !important;
         }
 
         .board-component .grid-cell {
           position: relative; background-color: #ffffff; border-radius: ${rowCount >= 8 ? "4px" : "8px"}; 
-          cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease;
-          display: flex; align-items: center; justify-content: center; user-select: none;
+          cursor: pointer; display: flex; align-items: center; justify-content: center; user-select: none;
         }
 
         .board-component .grid-cell:hover { background-color: #f1f5f9; }
         .board-component .grid-cell.clicked { background-color: #d7e3cc; }
         .board-component .grid-cell.dot { background-color: #ccf1ed; pointer-events: none; }
 
-        .board-component .line-segment { position: absolute; background-color: #00bda5; z-index: 1; pointer-events: none; will-change: opacity, transform; }
+        .board-component .line-segment { position: absolute; background-color: #00bda5; z-index: 1; pointer-events: none; }
 
         .board-component .span-vertical { top: 0; bottom: 0; left: calc(50% - ${s.line / 2}px); width: ${s.line}px; }
         .board-component .span-horizontal { left: 0; right: 0; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
@@ -413,7 +458,7 @@ const Board = ({
         .board-component .span-half-left { left: 0; width: 50%; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
         .board-component .span-half-right { left: 50%; width: 50%; top: calc(50% - ${s.line / 2}px); height: ${s.line}px; }
 
-        .board-component .number-badge { position: relative; z-index: 3; width: ${s.badge}px; height: ${s.badge}px; font-size: ${s.font}px; background-color: #0f172a; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; border: ${rowCount >= 8 ? "1px" : "2px"} solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .board-component .number-badge { position: relative; z-index: 3; width: ${s.badge}px; height: ${s.badge}px; font-size: ${s.font}px; background-color: #0f172a; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; border: ${rowCount >= 8 ? "1px" : "2px"} solid #ffffff; }
         
         @keyframes cellErrorFill {
           0% { background-color: #ffffff; box-shadow: none; transform: scale(1); }
@@ -425,30 +470,14 @@ const Board = ({
 
         .App.theme-dark .board-component .victory-card{
           background-color: var(--paper-dim);
-          border: 1px solid var(--line)
+          border: 2px solid var(--line)
         }
 
-        .App.theme-dark .board-component .victory-card h2{
-          color: var(--ink);
-        }
-
-        .App.theme-dark .board-component .victory-stats-container{
-          background-color: var(--paper-dim);
-          border: 1px solid var(--line)
-        }
-
-        .App.theme-dark .board-component .stat-box strong{
-          color: var(--ink)
-        }
-
-        .App.theme-dark .board-component .stat-total strong{
-          color: var(--ink)
-        }
-
-        .App.theme-dark .board-component .grid-board {
-          background-color: var(--paper-dim);
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-        }
+        .App.theme-dark .board-component .victory-card h2{ color: var(--ink); }
+        .App.theme-dark .board-component .victory-stats-container{ background-color: var(--paper-dim); border: 1px solid var(--line) }
+        .App.theme-dark .board-component .stat-box strong{ color: var(--ink) }
+        .App.theme-dark .board-component .stat-total strong{ color: var(--ink) }
+        .App.theme-dark .board-component .grid-board { background-color: var(--paper-dim); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); }
 
         .App.theme-dark .board-component .grid-cell {
           background-color: var(--paper);
@@ -468,21 +497,20 @@ const Board = ({
 
         .board-component .board-victory-glow .line-segment {
           background-color: #00bda5;
-          filter: drop-shadow(0 0 5px #00bda5);
-          transition: background-color 0.3s ease;
         }
 
-        /* ⚡ PERF FIX: Replaced live browser real-time page blur filters with solid canvas overlay */
+        /* ⚡ PERF FIX: Matte opaque layer with touch-action bypasses heavy browser scroll event loops */
         .board-component .victory-overlay {
           position: absolute;
           top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(28, 20, 36, 0.97); 
+          background: rgba(28, 20, 36, 0.98); 
           display: flex;
           align-items: center;
           justify-content: center;
           border-radius: 24px;
           z-index: 50;
-          animation: smoothFadeIn 0.2s ease-out forwards;
+          touch-action: pan-y;
+          animation: smoothFadeIn 0.15s ease-out forwards;
         }
 
         .board-component .victory-card h2.timeout-title {
@@ -491,24 +519,24 @@ const Board = ({
 
         .board-component .next-level-btn.timeout-btn {
           background-color: #ff5252;
-          box-shadow: 0 4px 12px rgba(255, 82, 82, 0.25);
         }
         .board-component .next-level-btn.timeout-btn:hover {
           background-color: #e04343;
-          box-shadow: 0 6px 16px rgba(255, 82, 82, 0.35);
         }
 
+        /* ⚡ PERF FIX: High-performance structural outline prevents real-time blurred backdrop overheads */
         .board-component .victory-card {
           background: #ffffff;
-          padding: 32px 24px;
+          padding: 24px 20px;
           border-radius: 24px;
           text-align: center;
-          width: 80%;
+          width: 85%;
           max-width: 290px;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-          border: 1px solid rgba(255, 255, 255, 0.8);
-          animation: dynamicScalePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          border: 2px solid #2e3142;
+          will-change: transform;
+          animation: dynamicScalePop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
           z-index: 60;
+          box-sizing: border-box;
         }
 
         .board-component .victory-card h2 { margin: 0 0 4px 0; font-size: 20px; font-weight: 800; color: #1e152a; letter-spacing: -0.01em; }
@@ -531,37 +559,47 @@ const Board = ({
         .board-component .stat-box { display: flex; flex-direction: column; }
         .board-component .stat-box.align-left { text-align: left; }
         .board-component .stat-box.align-right { text-align: right; }
-        .board-component .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; font-weight: 600; margin-bottom: 1px; }
+        .board-component .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; font-weight: 600; margin-bottom: 2px; }
         .board-component .stat-box strong { color: #0f172a; font-size: 14px; font-weight: 700; }
         .board-component .stat-box strong.points-plus { color: #00bda5; }
         .board-component .stats-row.center-row { display: flex; justify-content: center; align-items: center; padding-top: 2px; }
         .board-component .stat-total { font-size: 12px; color: #475569; font-weight: 600; }
         .board-component .stat-total strong { font-size: 14px; font-weight: 800; color: #1e1b4b; margin-left: 2px; }
 
+        /* MULTI-ACTION SELECTION LAYOUT TRACK CONTAINER */
+        .board-component .daily-overlay-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
         .board-component .next-level-btn {
           width: 100%;
           background-color: #00bda5;
           color: #ffffff;
           border: none;
-          padding: 10px 0;
+          padding: 11px 0;
           font-weight: 700;
           font-size: 14px;
-          border-radius: 10px;
+          border-radius: 12px;
           cursor: pointer;
-          user-select: none;
-          transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 4px 12px rgba(0, 189, 165, 0.25);
+          transition: background-color 0.1s ease;
+          box-sizing: border-box;
         }
 
-        .board-component .next-level-btn:hover { background-color: #00a48f; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 189, 165, 0.35); }
-        .board-component .next-level-btn:active { transform: scale(0.97) translateY(0); box-shadow: 0 2px 6px rgba(0, 189, 165, 0.2); }
+        .board-component .share-score-btn { background-color: #98a9a7; }
+        .board-component .share-score-btn:hover { background-color: #9ca2a1; }
+        .board-component .next-level-btn:hover { bbackground-color: #00a48f; }
+        .board-component .next-level-btn:active { transform: scale(0.97) translateY(0); }
 
         @keyframes smoothFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes dynamicScalePop { from { opacity: 0; transform: scale(0.85) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes dynamicScalePop { from { opacity: 0; transform: scale(0.93) translateY(4px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
         .board-component .confetti-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; border-radius: 24px; }
         
-        /* ⚡ PERF FIX: Changed to single 'forwards' burst pass running accelerated translateY logic */
+        /* ⚡ PERF FIX: Single hardware-accelerated pass prevents permanent calculation reflow loops */
         .board-component .confetti { 
           position: absolute; 
           width: 5px; 
@@ -569,35 +607,34 @@ const Board = ({
           border-radius: 1.5px; 
           opacity: 0.8; 
           top: -15px; 
-          animation: particleRain 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
+          animation: particleRain 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
           will-change: transform;
         }
 
-        .board-component .confetti.p-0  { left: 8%;  background: #00bda5; animation-delay: 0.1s; }
-        .board-component .confetti.p-1  { left: 22%; background: #ff4a5a; animation-delay: 0.6s; }
-        .board-component .confetti.p-2  { left: 36%; background: #ffca28; animation-delay: 0.2s; }
-        .board-component .confetti.p-3  { left: 50%; background: #9c27b0; animation-delay: 0.9s; }
-        .board-component .confetti.p-4  { left: 64%; background: #00bda5; animation-delay: 0.4s; }
-        .board-component .confetti.p-5  { left: 78%; background: #ff4a5a; animation-delay: 0.8s; }
-        .board-component .confetti.p-6  { left: 92%; background: #ffca28; animation-delay: 1.2s; }
-        .board-component .confetti.p-7  { left: 15%; background: #9c27b0; animation-delay: 0.3s; }
-        .board-component .confetti.p-8  { left: 29%; background: #00bda5; animation-delay: 1.4s; }
-        .board-component .confetti.p-9  { left: 43%; background: #ff4a5a; animation-delay: 0.5s; }
-        .board-component .confetti.p-10 { left: 58%; background: #ffca28; animation-delay: 1.0s; }
-        .board-component .confetti.p-11 { left: 72%; background: #9c27b0; animation-delay: 0.7s; }
-        .board-component .confetti.p-12 { left: 85%; background: #00bda5; animation-delay: 1.6s; }
-        .board-component .confetti.p-13 { left: 95%; background: #ff4a5a; animation-delay: 0.2s; }
+        .board-component .confetti.p-0  { left: 8%;  background: #00bda5; animation-delay: 0.05s; }
+        .board-component .confetti.p-1  { left: 22%; background: #ff4a5a; animation-delay: 0.3s; }
+        .board-component .confetti.p-2  { left: 36%; background: #ffca28; animation-delay: 0.1s; }
+        .board-component .confetti.p-3  { left: 50%; background: #9c27b0; animation-delay: 0.45s; }
+        .board-component .confetti.p-4  { left: 64%; background: #00bda5; animation-delay: 0.2s; }
+        .board-component .confetti.p-5  { left: 78%; background: #ff4a5a; animation-delay: 0.4s; }
+        .board-component .confetti.p-6  { left: 92%; background: #ffca28; animation-delay: 0.5s; }
+        .board-component .confetti.p-7  { left: 15%; background: #9c27b0; animation-delay: 0.15s; }
+        .board-component .confetti.p-8  { left: 29%; background: #00bda5; animation-delay: 0.6s; }
+        .board-component .confetti.p-9  { left: 43%; background: #ff4a5a; animation-delay: 0.25s; }
+        .board-component .confetti.p-10 { left: 58%; background: #ffca28; animation-delay: 0.5s; }
+        .board-component .confetti.p-11 { left: 72%; background: #9c27b0; animation-delay: 0.35s; }
+        .board-component .confetti.p-12 { left: 85%; background: #00bda5; animation-delay: 0.7s; }
+        .board-component .confetti.p-13 { left: 95%; background: #ff4a5a; animation-delay: 0.1s; }
 
         @keyframes particleRain {
           0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(480px) rotate(360deg); opacity: 0; }
+          100% { transform: translateY(460px) rotate(360deg); opacity: 0; }
         }
 
         @media (max-width: 480px) {
             .board-component .span-vertical, .board-component .span-half-top, .board-component .span-half-bottom { width: ${s.mLine}px; left: calc(50% - ${s.mLine / 2}px); }
             .board-component .span-horizontal, .board-component .span-half-left, .board-component .span-half-right { height: ${s.mLine}px; top: calc(50% - ${s.mLine / 2}px); }
-            .board-component .number-badge { width: ${s.mBadge}px; height: ${s.mBadge}px; font-size: ${s.mFont}px; border-width: 1px; }
+            .board-component .number-badge { width: ${s.mBadge}px; height: ${s.mBadge}px; font-size: ${s.mFont}px; border-width: 1.5px; }
             .board-component .grid-board { gap: ${s.mGap}px; padding: 8px; border-radius: 16px; }
             .board-component .number-bar { gap: 4px; margin: 12px auto 20px auto; }
             .board-component .bar-cell { width: 28px; font-size: 11px; border-radius: 6px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02); }
@@ -606,7 +643,7 @@ const Board = ({
             .board-component .dots-container { gap: 1px; padding: 1px; }
 
             .board-component .victory-overlay { padding: 8px; border-radius: 16px; }
-            .board-component .victory-card { padding: 14px 12px; border-radius: 16px; max-width: 220px; box-shadow: 0 12px 24px rgba(15, 23, 42, 0.4); }
+            .board-component .victory-card { padding: 14px 12px; border-radius: 16px; max-width: 220px; border-width: 1.5px; }
             .board-component .victory-card h2 { font-size: 15px; margin-bottom: 2px; }
             .board-component .victory-card p { font-size: 10px; margin-bottom: 10px; }
             .board-component .victory-stats-container { padding: 6px 8px; margin-bottom: 12px; gap: 4px; border-radius: 8px; }
@@ -615,7 +652,8 @@ const Board = ({
             .board-component .stat-box strong { font-size: 11px; }
             .board-component .stat-total { font-size: 10px; }
             .board-component .stat-total strong { font-size: 12px; }
-            .board-component .next-level-btn { padding: 7px 0; font-size: 11px; border-radius: 6px; }
+            .board-component .next-level-btn { padding: 8px 0; font-size: 12px; border-radius: 8px; }
+            .board-component .daily-overlay-actions { gap: 6px; }
             .board-component .confetti-container { border-radius: 16px; }
           }
       `}</style>
