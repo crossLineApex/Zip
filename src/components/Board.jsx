@@ -329,7 +329,7 @@ const Board = ({
                       setIsWon(false);
                       if (onNextLevel) onNextLevel();
                     }}>
-                    Keep Zipping
+                    Next Puzzle
                   </button>
                 )}
               </div>

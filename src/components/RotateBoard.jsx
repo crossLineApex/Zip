@@ -310,7 +310,7 @@ const RotateBoard = ({
                   if (onNextLevel) onNextLevel();
                 }}
               >
-                Keep Zipping
+                Next Puzzle 
               </button>
             )}
           </div>

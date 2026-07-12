@@ -171,7 +171,7 @@ const PuzzleCard = ({ variant, label}) => {
           {isZipFlip ? (
             <>
             <p>Tap non numbered grid tiles to flip their orientations</p>
-            <p>rotate the path segments</p>
+            <p>Rotate the path segments</p>
             <p>Align every single piece correctly to form one seamless line across the entire board.</p>
             </>
           ) : (
