@@ -94,7 +94,7 @@ function App() {
             <SectionHeading
               eyebrow="Games"
               title="Two games, one mind"
-              description="Switch between calm and challenging runs depending on how much time you want to spend solving."
+              description="Explore two distinct puzzle experiences with the same underlying logic."
             />
             <div className="modes-grid">
               <PuzzleCard
@@ -134,7 +134,7 @@ function App() {
             <div className="modes-grid">
               <ModeCard
                 title="Sandbox"
-                description="Unlimited, freshly generated puzzles at Easy, Medium and Hard difficulty with any grid size from 5 x 5 to 12 x 12 you choose. No streaks, no pressure."
+                description="Unlimited, freshly generated puzzles at Easy, Medium and Hard difficulty with any grid size from 5 x 5 to 10 x 10 you choose. No streaks, no pressure."
                 icon={
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                     <rect x="2" y="2" width="18" height="18" rx="3" stroke="var(--zipa)" strokeWidth="1.6"/>
@@ -144,7 +144,7 @@ function App() {
               />
               <ModeCard
                 title="Ascent"
-                description="A fixed run of levels that gets harder as you climb. Ohh and clock is ticking. Clear one to unlock the next level — a real sense of progress!"
+                description="A fixed run of levels that gets harder as you climb. Ohh and the clock is ticking. Clear one level to unlock the next — a real sense of progress!"
                 icon={
                   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
                     <path d="M4 17.5L9 9L12.5 12.5L18 4" stroke="var(--zipa)" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -203,7 +203,7 @@ function App() {
 
                   </div>
                   <h4>Connect in order</h4>
-                  <p>Only one line from starting from 1 → 2 → 3, and so on, in numerical order, passing through each cell.</p>
+                  <p>Only one line starting from 1 → 2 → 3, and so on, in numerical order, passing through each cell.</p>
                 </div>
 
                 <div className="step-card">
@@ -283,9 +283,9 @@ function App() {
             <div className="faq-list">
               <FAQItem question="What is Anytime Zip?" answer="Anytime Zip is a casual, independent, free-to-play puzzle site featuring two unique path-building game modes: Zip Flip and Zip Dot. Merely inspired by Linkedin's Zip game, but with its own unique twist." />
               <FAQItem question="What's the difference between Daily, Sandbox, and Ascent modes?"
-                answer="Daily is one shared curated puzzle per day that everyone sees. Sandbox serves vetted puzzles on demand at any grid size from 5×5 all the way up to 12×12. Ascent starts easy and ramps through the same curated puzzle pool as you climb." />
-              <FAQItem question="Is Anytime Zip free to play?" answer="100% free forever. There are no paywalls, locked levels, or premium restrictions blocking you from solving puzzles."/>
-              <FAQItem question="How many ways can I play Anytime Zip Game?" answer="You can either solve daiily puzzle on homepage, or select one of either Zip Flip or Zip Dot from the header with your choice of mode. Relieve your boredom!" />
+                answer="Daily is one shared curated puzzle per day that everyone sees. Sandbox serves vetted puzzles on demand at any grid size from 5×5 all the way up to 10×10. Ascent starts easy and ramps through the same curated puzzle pool as you climb." />
+              <FAQItem question="Is Anytime Zip free to play?" answer="100% free. There are no paywalls, locked levels, or premium restrictions blocking you from solving puzzles."/>
+              <FAQItem question="How many ways can I play Anytime Zip Game?" answer="You can either solve daily puzzles on homepage, or select one of either Zip Flip or Zip Dot from the header with your choice of mode. Relieve your boredom!" />
               <FAQItem question="Do I need to create an account or sign up?" answer="No sign-up required. Play instantly. We believe great puzzle games shouldn't require a login form" />
               <FAQItem question="Can I play Anytime Zip offline?" answer="You only need an internet connection to load the initial website. Once the page is open, you can keep playing even if you lose service or hop onto an airplane or ride inside a tunnel."/>
               <FAQItem question="Does Anytime Zip work on my phone?" answer="Yes! Anytime Zip is fully responsive and works on any device with a modern web browser. Play on your phone, tablet, or desktop." />
