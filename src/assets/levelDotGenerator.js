@@ -198,27 +198,106 @@ const generateZipDotConfig = (n, level) => {
     const first = entries[0];
     const last = entries[entries.length - 1];
 
+
+    const numbersToKeep = generateNumbersToKeep(n,level,maxNum);
+
     // Build the object
     const transformedPath = {};
 
     path.forEach(([row, col], index) => {
-    const key = `${row}-${col}`;
+      const key = `${row}-${col}`;
+      const trueValue = numberAssignments[index];
 
-    if (index === Number(first[0])) {
-        transformedPath[key] = first[1];
-    } else if (index === Number(last[0])) {
-        transformedPath[key] = last[1];
-    } else {
+      if (trueValue === 1 || trueValue === maxNum || numbersToKeep.includes(trueValue)) {
+        transformedPath[key] = trueValue;
+      } else {
         transformedPath[key] = undefined;
-    }
+      }
     });
-
 
   return {
       gridConfig: gridConfig,
       maxNum: maxNum,
       start: path[0], // Securely returns the starting [row, col] position of clue 1
-      transformedPath: transformedPath // Returns the path with coordinates as keys and clue numbers as values
+      transformedPath: transformedPath, // Returns the path with coordinates as keys and clue numbers as values
+      numbersToKeep: numbersToKeep
     };};
 
+    /**
+ * Selects strategic intermediate clue digits to preserve as hints on the board
+ * based on grid size (n) and difficulty level.
+ */
+const generateNumbersToKeep = (n, level, maxNum) => {
+  const list = [];
+  if (maxNum <= 3) return list; // Not enough intermediate space to pick numbers safely
+
+  // Helper to securely grab a random integer between min and max (exclusive)
+  const getRandomBetween = (min, max) => {
+    const low = Math.max(2, min);
+    const high = Math.min(maxNum - 1, max);
+    if (low > high) return null;
+    return Math.floor(Math.random() * (high - low + 1)) + low;
+  };
+
+  const midPoint = Math.floor(maxNum / 2);
+
+  // --- RULE 1: EASY MODE ---
+  if (level === 'easy') {
+    if (n === 7 || n === 8) {
+      // Pick 1 number right around the middle (+/- 1 variance)
+      const offset = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+      const num = getRandomBetween(midPoint + offset, midPoint + offset);
+      if (num) list.push(num);
+    }
+  } 
+  // --- RULE 2: MEDIUM MODE ---
+  else if (level === 'medium') {
+    if (n === 6 || n === 7) {
+      const offset = Math.floor(Math.random() * 3) - 1;
+      const num = getRandomBetween(midPoint + offset, midPoint + offset);
+      if (num) list.push(num);
+    } else if (n === 8) {
+      // Pick 2 numbers: One from lower half, one from upper half
+      const num1 = getRandomBetween(2, midPoint);
+      const num2 = getRandomBetween(midPoint + 1, maxNum - 1);
+      if (num1) list.push(num1);
+      if (num2) list.push(num2);
+    }
+  } 
+  // --- RULE 3: HARD MODE ---
+  else if (level === 'hard') {
+    if (n === 5 || n === 6) {
+      const offset = Math.floor(Math.random() * 3) - 1;
+      const num = getRandomBetween(midPoint + offset, midPoint + offset);
+      if (num) list.push(num);
+    } else if (n === 7) {
+      const num1 = getRandomBetween(2, midPoint);
+      const num2 = getRandomBetween(midPoint + 1, maxNum - 1);
+      if (num1) list.push(num1);
+      if (num2) list.push(num2);
+    } else if (n === 8) {
+      // Decide randomly between keeping 2 or 3 numbers
+      const keepThree = Math.random() > 0.5;
+      if (keepThree) {
+        // Split into thirds
+        const third = Math.floor(maxNum / 3);
+        const num1 = getRandomBetween(2, third);
+        const num2 = getRandomBetween(third + 1, third * 2);
+        const num3 = getRandomBetween(third * 2 + 1, maxNum - 1);
+        if (num1) list.push(num1);
+        if (num2) list.push(num2);
+        if (num3) list.push(num3);
+      } else {
+        // Split into halves
+        const num1 = getRandomBetween(2, midPoint);
+        const num2 = getRandomBetween(midPoint + 1, maxNum - 1);
+        if (num1) list.push(num1);
+        if (num2) list.push(num2);
+      }
+    }
+  }
+
+  // Deduplicate and filter out edge cases just in case ranges overlapped
+  return [...new Set(list)].filter(num => num > 1 && num < maxNum);
+};
 export default generateZipDotConfig;

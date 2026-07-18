@@ -4,11 +4,8 @@
  * @param {Array<Array<Object>>} standardGrid - Output matrix from generateZipGridConfig
  * @returns {Array<Array<Object>>} The structurally padded grid matrix
  */
-const convertToZipDot = (standardGrid, maxNum) => {
+const convertToZipDot = (standardGrid, maxNum, numbersToKeep) => {
   if (!standardGrid || standardGrid.length === 0) return [];
-
-  // NEW: Holds the absolute correct answers using coordinates as keys
-  const solutionMap = {};
 
   // 1. Process the existing rows first: insert a dot cell AT THE BEGINNING of each row
   const paddedRows = standardGrid.map((row) => [
@@ -45,7 +42,7 @@ const convertToZipDot = (standardGrid, maxNum) => {
       const num = dotGrid[r][c].number;
       if (num !== undefined && num !== null) {
         // "a" for end-anchors (1 or max), "d" for intermediate digits
-        if (num === 1 || num === maxNum) {
+        if (num === 1 || num === maxNum  || (numbersToKeep && numbersToKeep.includes(num))) {
           colTags.push("a");
         } else {
           colTags.push("d");
@@ -64,7 +61,7 @@ const convertToZipDot = (standardGrid, maxNum) => {
     for (let c = 1; c < totalCols; c++) {
       const num = dotGrid[r][c].number;
       if (num !== undefined && num !== null) {
-        if (num === 1 || num === maxNum) {
+        if (num === 1 || num === maxNum || (numbersToKeep && numbersToKeep.includes(num))) {
           rowTags.push("a");
         } else {
           rowTags.push("d");
@@ -113,7 +110,7 @@ const convertToZipDot = (standardGrid, maxNum) => {
 
       // Wipe out the number property unless it is 1 or the max target anchor
       if (cellCopy.number !== undefined && cellCopy.number !== null) {
-        if (cellCopy.number !== 1 && cellCopy.number !== maxNum) {
+        if (cellCopy.number !== 1 && cellCopy.number !== maxNum && (numbersToKeep && !numbersToKeep.includes(cellCopy.number))) {
           delete cellCopy.number;
         }
       }
@@ -122,8 +119,9 @@ const convertToZipDot = (standardGrid, maxNum) => {
     })
   );
 
-  const numberBarChoices = Array.from({ length: maxNum - 2 }, (_, i) => i + 2);
-
+const numberBarChoices = Array.from({ length: maxNum - 2 }, (_, i) => i + 2)
+  .filter(num => !numbersToKeep.includes(num));
+  
   return { dotGrid: cleanedGrid, initialDots, numberBarChoices };
 };
 

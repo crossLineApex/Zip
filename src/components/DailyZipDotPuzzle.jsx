@@ -19,9 +19,9 @@ const DailyZipDotPuzzle = ({view, onPuzzleSelect}) => {
     
     const puzzle = useMemo(() => {
         const { zipDot } = getDailyPuzzleParameters();
-        const { gridConfig, maxNum, start, transformedPath } = generateZipDotConfig(zipDot.gridSize, zipDot.difficulty, zipDot.seed);
+        const { gridConfig, maxNum, start, transformedPath, numbersToKeep } = generateZipDotConfig(zipDot.gridSize, zipDot.difficulty, zipDot.seed);
         const originalBoard = [...gridConfig];
-        const {dotGrid, initialDots, numberBarChoices} = convertToZipDot(gridConfig, maxNum);
+        const {dotGrid, initialDots, numberBarChoices} = convertToZipDot(gridConfig, maxNum, numbersToKeep);
         return { dotGrid, maxNum, start, initialDots, originalBoard, numberBarChoices, transformedPath, difficulty: zipDot.difficulty, gridSize: zipDot.gridSize };
     }, []);
 
