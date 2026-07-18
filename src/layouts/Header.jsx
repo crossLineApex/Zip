@@ -12,7 +12,7 @@ const Header = ({ onPuzzleSelect, selectedPuzzle, onBrandClick, darkMode, onTogg
             <circle cx="20" cy="8" r="2.6" fill="var(--zipb)" />
             <path d="M8 20 L8 14 L14 14 L14 8 L20 8" stroke="var(--ink)" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className="brand-name">anytime ZIP</span>
+          <h1 className="brand-name">anytime ZIP</h1>
         </a>
 
         <div className="header-ctas">

@@ -190,7 +190,7 @@ const RotateBoard = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "AnytimeZip Daily Score",
+          title: "Anytime Zip Daily Score",
           text: formattedSummary,
           url: targetLink,
         });

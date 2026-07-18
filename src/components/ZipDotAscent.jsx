@@ -55,9 +55,9 @@ const ZipDotAscent = () => {
     }, [gridSize, difficulty]);
     
     const puzzle = useMemo(() => {
-        const { gridConfig, maxNum, start, transformedPath } = generateZipDotConfig(gridSize, difficulty);
+        const { gridConfig, maxNum, start, transformedPath, numbersToKeep } = generateZipDotConfig(gridSize, difficulty);
         const originalBoard = [...gridConfig];
-        const {dotGrid, initialDots, numberBarChoices} = convertToZipDot(gridConfig, maxNum);
+        const {dotGrid, initialDots, numberBarChoices} = convertToZipDot(gridConfig, maxNum, numbersToKeep);
         return { dotGrid, maxNum, start, initialDots, originalBoard, numberBarChoices, transformedPath };
     }, [gridSize, difficulty, level]);
 

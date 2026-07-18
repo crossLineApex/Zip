@@ -59,7 +59,7 @@ function App() {
               Two puzzles. One path each. <em>Every day.</em>
             </h1>
             <p className="lede">
-              Anytime Zip is home to Zip Flip and Zip Dot — a pair of puzzles inspired from Linkedin's Zip daily puzzle. Each game challenges you in a unique sense. Play one or both, and see how far you can go.
+              Anytime Zip Game is home to Zip Flip and Zip Dot — a pair of puzzles inspired from Linkedin's Zip daily puzzle. Each game challenges you in a unique sense. Play one or both, and see how far you can go.
             </p>
 
             {view === 'daily' ? (
@@ -306,7 +306,7 @@ function App() {
               <circle cx="20" cy="8" r="2.6" fill="var(--zipb)" />
               <path d="M8 20 L8 14 L14 14 L14 8 L20 8" stroke="var(--ink)" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span className="brand-name">anytime Zip</span>
+            <h1 className="brand-name">anytime Zip</h1>
             <div className="footer-fine">Built for daily puzzle runs</div>
           </div>
           <div className="footer-links">
